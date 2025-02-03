@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   gap: 12px;
   max-width: 100%;
-  justify-content: flex-start;
+  justify-content: center; /* Center items by default (mobile first) */
   align-items: flex-start;
   padding: 12px;
   overflow-x: hidden; /* Prevent horizontal scroll */
@@ -18,17 +18,19 @@
   border-radius: 16px;
   word-wrap: break-word;
   min-width: 200px;
-  max-width: 300px;
+  max-width: 200px;
   flex: 1 1 auto;
   box-sizing: border-box;
   position: relative;
+  margin: 0 auto; /* Center on mobile */
 }
 
 /* Position timestamp at the top */
 .timestamp {
-  font-size: 12px;
+  font-size: 10px;
   color: #b0b0b0;
   margin-bottom: 8px;
+  text-align: left;
 }
 
 /* Clipboard icon (top-right) */
@@ -50,4 +52,17 @@
 .pasted-text {
   margin-top: 4px;
   word-break: break-word;
+  text-align: left;;
+}
+
+/* 🔹 RESPONSIVE DESIGN */
+/* When screen width is larger than 600px, align items to the left */
+@media (min-width: 570px) {
+  .paste-container {
+    justify-content: flex-start; /* Align items to the left */
+  }
+
+  .paste-card {
+    margin: 0; /* Remove auto margin */
+  }
 }

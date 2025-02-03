@@ -1,0 +1,57 @@
+/* src/components/NameModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Box */
+.modal-content {
+  background: #303030;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  color: #ececec;
+}
+
+/* Input Field */
+.modal-content input {
+  width: 90%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #212121;
+  color: white;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.modal-buttons button:first-child {
+  background: #646cff;
+  color: white;
+}
+
+.modal-buttons button:last-child {
+  background: #555;
+  color: white;
+}

@@ -1,5 +1,6 @@
 // src/components/PasteContainer.tsx
 import { useState, useEffect } from "react";
+import NameModal from "./NameModal";
 import "./PasteContainer.css";
 
 // Clipboard SVG icon
@@ -18,26 +19,20 @@ const ClipboardIcon = () => (
 interface PastedItem {
   text: string;
   timestamp: string;
+  displayName: string;
 }
 
 const PasteContainer = () => {
   const [pastedTexts, setPastedTexts] = useState<PastedItem[]>([]);
+  const [newPaste, setNewPaste] = useState<string | null>(null); // Stores pasted text before adding
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text");
       if (pastedText) {
-        const nzDate = new Intl.DateTimeFormat("en-NZ", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        }).format(new Date());
-
-        setPastedTexts((prev) => [...prev, { text: pastedText, timestamp: nzDate }]); // Add to the end
+        setNewPaste(pastedText);
+        setShowModal(true); // Show modal for naming the paste
       }
     };
 
@@ -47,7 +42,29 @@ const PasteContainer = () => {
     };
   }, []);
 
-  // Function to copy the text (excluding the timestamp)
+  const handleSaveName = (name: string) => {
+    if (!newPaste) return;
+
+    const nzDate = new Intl.DateTimeFormat("en-NZ", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(new Date());
+
+    setPastedTexts((prev) => [
+      ...prev,
+      { text: newPaste, displayName: name, timestamp: nzDate },
+    ]);
+
+    setNewPaste(null);
+    setShowModal(false);
+  };
+
+  // Function to copy the original pasted text
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       alert("Copied to clipboard!");
@@ -55,16 +72,20 @@ const PasteContainer = () => {
   };
 
   return (
-    <div className="paste-container">
-      {pastedTexts.map((item, index) => (
-        <div key={index} className="paste-card">
-          <div className="timestamp">{item.timestamp}</div>
-          <div className="copy-icon" onClick={() => copyToClipboard(item.text)}>
-            <ClipboardIcon />
+    <div>
+      {showModal && <NameModal onSave={handleSaveName} onClose={() => setShowModal(false)} />}
+
+      <div className="paste-container">
+        {pastedTexts.map((item, index) => (
+          <div key={index} className="paste-card">
+            <div className="timestamp">{item.timestamp}</div>
+            <div className="copy-icon" onClick={() => copyToClipboard(item.text)}>
+              <ClipboardIcon />
+            </div>
+            <div className="pasted-text">{item.displayName}</div> {/* Show Display Name Instead */}
           </div>
-          <div className="pasted-text">{item.text}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
