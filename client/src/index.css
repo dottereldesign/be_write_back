@@ -1,0 +1,33 @@
+/* src/index.css */
+
+body {
+  background-color: #212121;
+  color: #ececec;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  color-scheme: light dark;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* Main container */
+#root {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* App title */
+.app-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
