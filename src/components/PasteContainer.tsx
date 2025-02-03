@@ -30,9 +30,14 @@ const PasteContainer = () => {
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text");
+      console.log("🔹 PASTE EVENT TRIGGERED");
+      console.log("📌 Pasted text:", pastedText);
+
       if (pastedText) {
+        console.log("🟢 Setting newPaste:", pastedText);
         setNewPaste(pastedText);
-        setShowModal(true); // Show modal for naming the paste
+        console.log("🟢 Opening modal...");
+        setShowModal(true);
       }
     };
 
@@ -44,6 +49,9 @@ const PasteContainer = () => {
 
   const handleSaveName = (name: string) => {
     if (!newPaste) return;
+
+    console.log("✅ Saving name:", name);
+    console.log("📌 Associating with pasted text:", newPaste);
 
     const nzDate = new Intl.DateTimeFormat("en-NZ", {
       hour: "2-digit",
@@ -60,8 +68,10 @@ const PasteContainer = () => {
       { text: newPaste, displayName: name, timestamp: nzDate },
     ]);
 
+    console.log("🚀 Added new card to UI.");
     setNewPaste(null);
     setShowModal(false);
+    console.log("🔻 Modal closed.");
   };
 
   // Function to copy the original pasted text
@@ -73,16 +83,27 @@ const PasteContainer = () => {
 
   return (
     <div>
-      {showModal && <NameModal onSave={handleSaveName} onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <NameModal
+          key={newPaste ? `modal-${newPaste}` : "modal"} // 🔹 Ensures a fresh instance
+          isOpen={showModal}
+          pastedText={newPaste}
+          onSave={handleSaveName}
+          onClose={() => setShowModal(false)}
+        />
+      )}
 
       <div className="paste-container">
         {pastedTexts.map((item, index) => (
           <div key={index} className="paste-card">
             <div className="timestamp">{item.timestamp}</div>
-            <div className="copy-icon" onClick={() => copyToClipboard(item.text)}>
+            <div
+              className="copy-icon"
+              onClick={() => copyToClipboard(item.text)}
+            >
               <ClipboardIcon />
             </div>
-            <div className="pasted-text">{item.displayName}</div> {/* Show Display Name Instead */}
+            <div className="pasted-text">{item.displayName}</div>
           </div>
         ))}
       </div>
