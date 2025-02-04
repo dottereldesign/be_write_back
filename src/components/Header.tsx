@@ -10,7 +10,11 @@ const Header = () => {
 
   return (
     <header className="app-header">
-      <h1 className="app-title">brb, saving that</h1>
+      {/* 🔹 Main Title */}
+      <div className="title-container">
+        <h1 className="app-title">brb, saving that</h1>
+        <span className="subtitle-jp">書いて戻ります</span>
+      </div>
 
       {/* 🔹 Accordion Toggle Button */}
       <button className="accordion-toggle" onClick={() => setIsOpen(!isOpen)}>
@@ -30,12 +34,20 @@ const Header = () => {
           </p>
           <p>Click the clipboard icon to copy the original text anytime.</p>
 
+          {/* 🔹 Background Glowing Spheres (Behind Image) */}
+          <div className="glow-sphere sphere-1"></div>
+          <div className="glow-sphere sphere-2"></div>
+
           {/* 🔹 Clipboard Image */}
           <img
             src={clipboardImg}
             alt="Clipboard Instructions"
             className="clipboard-img"
           />
+
+          {/* 🔹 Foreground Glowing Spheres (Above Image) */}
+          <div className="glow-sphere sphere-3"></div>
+          <div className="glow-sphere sphere-4"></div>
         </div>
       )}
     </header>

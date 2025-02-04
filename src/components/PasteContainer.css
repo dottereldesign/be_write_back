@@ -112,3 +112,27 @@
     margin: 0; /* Remove auto margin */
   }
 }
+
+/* 🔹 Empty State Styling */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh; /* Centers it in the viewport */
+  text-align: center;
+  color: #b0b0b0;
+}
+
+/* 🔹 Large Clipboard Icon */
+.clipboard-large {
+  font-size: 100px; /* Big clipboard */
+  cursor: pointer;
+  opacity: 0.7;
+  transition: transform 0.2s ease, opacity 0.3s ease-in-out;
+}
+
+.clipboard-large:hover {
+  opacity: 1;
+  transform: scale(1.1); /* Slight pop on hover */
+}

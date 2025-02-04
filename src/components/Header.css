@@ -5,11 +5,32 @@
   margin-bottom: 20px;
 }
 
+/* ✅ Title Container */
+.title-container {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+}
+
+/* ✅ Main Title */
 .app-title {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 32px;
   color: #fff;
+  position: relative;
+  display: inline-block;
+}
+
+/* ✅ Japanese Subtitle - Positioned Bottom-Right */
+.subtitle-jp {
+  position: absolute;
+  bottom: 16px; /* ✅ Slightly below main title */
+  right: -10px; /* ✅ Aligned to the right of the main title */
+  font-size: 0.8rem;
+  color: #9fa8da; /* ✅ Subtle blue-purple tone */
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 /* Accordion Toggle Button */
@@ -25,7 +46,7 @@
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px; /* 🔹 Space between text and icon */
+  gap: 8px;
 }
 
 .accordion-toggle:hover {
@@ -36,26 +57,89 @@
 .instructions {
   font-size: 16px;
   color: #b0b0b0;
-  max-width: 700px;
   margin: 10px auto;
   text-align: left;
   background-color: #1c1f37;
   padding: 32px;
   border-radius: 8px;
-  position: relative; /* ✅ Ensure the image is positioned relative to this container */
+  position: relative;
+  width: 500px;
 }
 
-/* 🔹 Clipboard Image Styling */
+.instructions p {
+  max-width: 400px;
+}
+
+/* ✅ Clipboard Image Styling */
 .clipboard-img {
   position: absolute;
-  bottom: -130px; /* Move slightly below the container */
-  right: -100px; /* Move slightly to the right */
-  width: 250px; /* ✅ Adjust size as needed */
-  opacity: 0.9; /* Slight transparency */
+  bottom: -30px;
+  right: -100px;
+  width: 250px;
+  opacity: 0.9;
   transition: transform 0.3s ease-in-out;
+  z-index: 3;
 }
 
-/* 🔹 Hover Effect for Image */
 .clipboard-img:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
+  transform: scale(1.05);
+}
+
+/* ✅ Glowing Spheres - Behind the Image */
+.glow-sphere {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+/* ✅ First Sphere - Blue Glow (Behind Image) */
+.sphere-1 {
+  background: radial-gradient(
+    circle,
+    rgba(32, 64, 118, 0.7) 0%,
+    rgba(32, 64, 118, 0) 80%
+  );
+  bottom: -50px;
+  right: 40px;
+  z-index: 1;
+}
+
+/* ✅ Second Sphere - Purple Glow (Behind Image) */
+.sphere-2 {
+  background: radial-gradient(
+    circle,
+    rgba(73, 59, 173, 0.7) 0%,
+    rgba(73, 59, 173, 0) 80%
+  );
+  bottom: -50px;
+  right: -90px;
+  z-index: 1;
+}
+
+/* ✅ Third Sphere - Blue Glow (Above Image) */
+.sphere-3 {
+  background: radial-gradient(
+    circle,
+    rgba(32, 64, 118, 0.7) 0%,
+    rgba(32, 64, 118, 0) 80%
+  );
+  bottom: -20px;
+  right: 50px;
+  z-index: 4;
+  opacity: 0.2;
+}
+
+/* ✅ Fourth Sphere - Purple Glow (Above Image) */
+.sphere-4 {
+  background: radial-gradient(
+    circle,
+    rgba(73, 59, 173, 0.7) 0%,
+    rgba(73, 59, 173, 0) 80%
+  );
+  bottom: -20px;
+  right: -70px;
+  z-index: 4;
+  opacity: 0.3;
 }
