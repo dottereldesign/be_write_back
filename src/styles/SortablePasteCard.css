@@ -1,0 +1,23 @@
+/* src/styles/SortablePasteCard.css */
+.paste-card {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  display: flex !important;
+  z-index: 1000 !important;
+  background: #303030 !important;
+}
+
+.paste-card:hover {
+  transform: scale(1.03);
+}
+
+.drag-handle {
+  cursor: grab;
+  font-size: 16px;
+  color: #b0b0b0;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #b0b0b0;
+}

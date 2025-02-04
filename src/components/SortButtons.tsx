@@ -6,7 +6,7 @@ import {
   faSortNumericDown,
   faSortNumericUp,
 } from "@fortawesome/free-solid-svg-icons";
-import "./SortButtons.css";
+import "../styles/SortButtons.css";
 
 interface SortButtonsProps {
   setSortType: (type: "name" | "date") => void;

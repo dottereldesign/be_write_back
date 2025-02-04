@@ -1,4 +1,4 @@
-/* src/components/PasteContainer.css */
+/* src/styles/PasteContainer.css */
 
 .paste-container {
   display: flex;
@@ -135,4 +135,29 @@
 .clipboard-large:hover {
   opacity: 1;
   transform: scale(1.1); /* Slight pop on hover */
+}
+
+/* Drag Handle */
+.drag-handle {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  cursor: grab;
+  color: #b0b0b0;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.drag-handle:hover {
+  color: #ececec;
+}
+
+/* ✅ Ensure Paste Cards Have Space for the Drag Handle */
+.paste-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  padding-left: 32px; /* Make space for the drag handle */
 }

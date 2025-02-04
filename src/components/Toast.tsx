@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./Toast.css";
+import "../styles/Toast.css";
 
 interface ToastProps {
   message: string;

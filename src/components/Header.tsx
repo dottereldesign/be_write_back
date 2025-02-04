@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import clipboardImg from "../assets/clipboard-img.png"; // ✅ Import the image
-import "./Header.css";
+import "../styles/Header.css"; // ✅ Import the CSS
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(true); // ✅ Default state set to OPEN

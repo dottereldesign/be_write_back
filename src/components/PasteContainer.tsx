@@ -1,51 +1,66 @@
 // src/components/PasteContainer.tsx
 import { useState, useEffect } from "react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
 import Toast from "./Toast";
-import "./PasteContainer.css";
+import SortablePasteCard from "./SortablePasteCard";
+import ClearButton from "./ClearButton"; // ✅ Import Clear Button
+import { useToast } from "../hooks/useToast";
+import { useDraggableList } from "../hooks/useDraggableList";
+import "../styles/PasteContainer.css";
 
 interface PastedItem {
+  id: string;
   text: string;
   timestamp: string;
   displayName: string;
 }
 
 const PasteContainer = () => {
-  const [pastedTexts, setPastedTexts] = useState<PastedItem[]>([]);
   const [newPaste, setNewPaste] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [sortType, setSortType] = useState<"name" | "date">("date");
   const [isAscending, setIsAscending] = useState<boolean>(true);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState<boolean>(false);
-  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
-  // ✅ Paste Event Listener
+  const {
+    items: pastedTexts,
+    setItems: setPastedTexts,
+    handleDragEnd,
+  } = useDraggableList([]);
+  const { showToast, toastMessage, triggerToast } = useToast();
+
+  useEffect(() => {
+    console.log("📌 Pasted Texts Updated:", pastedTexts);
+  }, [pastedTexts]);
+
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text");
       if (pastedText) {
-        setNewPaste(pastedText);
+        const sanitizedText = pastedText.replace(/<\/?[^>]+(>|$)/g, "").trim();
+        console.log("📋 Pasted Text (Sanitized):", sanitizedText);
+        setNewPaste(sanitizedText);
         setShowModal(true);
       }
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && showModal) {
-        setShowModal(false);
-      }
-    };
-
     document.addEventListener("paste", handlePaste);
-    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("paste", handlePaste);
-      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showModal]);
+  }, []);
 
-  // ✅ Save a Pasted Item
   const handleSaveName = (name: string) => {
     if (!newPaste) return;
 
@@ -59,55 +74,33 @@ const PasteContainer = () => {
       year: "numeric",
     }).format(new Date());
 
-    setPastedTexts((prev) => [
-      ...prev,
-      { text: newPaste, displayName: name, timestamp: nzDate },
-    ]);
+    const newEntry: PastedItem = {
+      id: Math.random().toString(36).substr(2, 9),
+      text: newPaste,
+      displayName: name,
+      timestamp: nzDate,
+    };
 
+    console.log("🟢 Adding new entry:", newEntry);
+
+    setPastedTexts((prev) => [...prev, newEntry]);
     setNewPaste(null);
     setShowModal(false);
   };
 
-  // ✅ Copy Text to Clipboard
   const copyToClipboard = (text: string, displayName: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      console.log("📋 [PasteContainer] Copying:", displayName);
-      setToastMessage(`Copied contents of "${displayName}" to clipboard!`);
-      setShowToast(true);
-
-      // ✅ Automatically hide after 2.5s
-      setTimeout(() => {
-        console.log("🕒 [PasteContainer] Hiding Toast...");
-        setShowToast(false);
-      }, 2500);
+      triggerToast(`Copied contents of "${displayName}" to clipboard!`);
     });
   };
 
-  // ✅ Sorting Logic (FIXED)
-  const sortedTexts = [...pastedTexts].slice().sort((a, b) => {
-    if (sortType === "name") {
-      return isAscending
-        ? a.displayName.localeCompare(b.displayName)
-        : b.displayName.localeCompare(a.displayName);
-    } else {
-      return isAscending
-        ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-        : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    }
-  });
+  const handleClearAll = () => {
+    setPastedTexts([]); // Clear state
+    localStorage.removeItem("pastedTexts"); // Clear localStorage
+    console.log("🗑 Cleared all pasted texts.");
+  };
 
-  // ✅ Debug Sorting Updates
-  useEffect(() => {
-    console.log("🔄 Sorting Updated:", { sortType, isAscending });
-  }, [sortType, isAscending]);
-
-  // ✅ Animate Cards Appearing
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisibleCards(new Set(sortedTexts.map((_, i) => i)));
-    }, 50);
-    return () => clearTimeout(timer);
-  }, [sortedTexts]);
+  const sensors = useSensors(useSensor(PointerSensor));
 
   return (
     <div>
@@ -128,26 +121,37 @@ const PasteContainer = () => {
         sortType={sortType}
       />
 
-      <div className="paste-container">
-        {sortedTexts.map((item, index) => (
-          <div
-            key={index}
-            className={`paste-card ${visibleCards.has(index) ? "show" : ""}`}
-          >
-            <div className="timestamp">{item.timestamp}</div>
-            <div
-              className="copy-icon"
-              onClick={() => copyToClipboard(item.text, item.displayName)}
-            >
-              📋
-            </div>
-            <div className="pasted-text">{item.displayName}</div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={pastedTexts.map((item) => item.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="paste-container">
+            {pastedTexts.length > 0 ? (
+              pastedTexts.map((item) => (
+                <SortablePasteCard
+                  key={`card-${item.id}`} // ✅ Unique key fix
+                  item={item}
+                  copyToClipboard={copyToClipboard}
+                />
+              ))
+            ) : (
+              <p className="empty-state">
+                📋 No pasted items yet. Try pasting something!
+              </p>
+            )}
           </div>
-        ))}
-      </div>
+        </SortableContext>
+      </DndContext>
+
+      <ClearButton onClear={handleClearAll} />
 
       {showToast && toastMessage && (
-        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
+        <Toast message={toastMessage} onClose={() => {}} />
       )}
     </div>
   );
