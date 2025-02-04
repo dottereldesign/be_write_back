@@ -1,7 +1,7 @@
 // src/components/Toast.tsx
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./Toast.css";
 
 interface ToastProps {
@@ -9,11 +9,12 @@ interface ToastProps {
   onClose: () => void;
 }
 
-const Toast = ({ message, onClose }: ToastProps) => {
+const Toast = ({ message }: ToastProps) => {
   const [visible, setVisible] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
+    if (!message) return; // ✅ Prevent unnecessary re-runs
     console.log("🔵 [Toast] New message received:", message);
     setVisible(true);
     setFadeOut(false);
@@ -28,7 +29,6 @@ const Toast = ({ message, onClose }: ToastProps) => {
     const removeToastTimer = setTimeout(() => {
       console.log("🔴 [Toast] Removing toast from UI.");
       setVisible(false);
-      onClose();
     }, 2500);
 
     return () => {
@@ -36,20 +36,29 @@ const Toast = ({ message, onClose }: ToastProps) => {
       clearTimeout(fadeOutTimer);
       clearTimeout(removeToastTimer);
     };
-  }, [message, onClose]);
+  }, [message]); // ✅ Only run when message changes
 
   return visible ? (
     <div className={`toast ${fadeOut ? "hide" : "show"}`}>
       {/* ✅ Green Tick Circle */}
       <div className="toast-icon">
-        <FontAwesomeIcon icon={faCheckCircle} />
+        <FontAwesomeIcon icon={faCheck} />
       </div>
 
       {/* ✅ Message */}
       <span className="toast-message">{message}</span>
 
       {/* ✅ Close Button (Top Right) */}
-      <button className="toast-close" onClick={onClose}>
+      <button
+        className="toast-close"
+        onClick={() => {
+          console.log("❌ [Toast] Close button clicked!");
+          setFadeOut(true);
+          setTimeout(() => {
+            setVisible(false);
+          }, 500);
+        }}
+      >
         <FontAwesomeIcon icon={faTimes} />
       </button>
     </div>

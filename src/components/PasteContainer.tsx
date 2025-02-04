@@ -19,8 +19,9 @@ const PasteContainer = () => {
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState<boolean>(false);
-  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set()); // Track visible cards
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
+  // ✅ Paste Event Listener
   useEffect(() => {
     const handlePaste = (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text");
@@ -44,6 +45,7 @@ const PasteContainer = () => {
     };
   }, [showModal]);
 
+  // ✅ Save a Pasted Item
   const handleSaveName = (name: string) => {
     if (!newPaste) return;
 
@@ -57,32 +59,55 @@ const PasteContainer = () => {
       year: "numeric",
     }).format(new Date());
 
-    setPastedTexts((prev) => {
-      const updatedTexts = [
-        ...prev,
-        { text: newPaste, displayName: name, timestamp: nzDate },
-      ];
-      return updatedTexts;
-    });
+    setPastedTexts((prev) => [
+      ...prev,
+      { text: newPaste, displayName: name, timestamp: nzDate },
+    ]);
 
     setNewPaste(null);
     setShowModal(false);
   };
 
+  // ✅ Copy Text to Clipboard
   const copyToClipboard = (text: string, displayName: string) => {
     navigator.clipboard.writeText(text).then(() => {
+      console.log("📋 [PasteContainer] Copying:", displayName);
       setToastMessage(`Copied contents of "${displayName}" to clipboard!`);
       setShowToast(true);
+
+      // ✅ Automatically hide after 2.5s
+      setTimeout(() => {
+        console.log("🕒 [PasteContainer] Hiding Toast...");
+        setShowToast(false);
+      }, 2500);
     });
   };
 
+  // ✅ Sorting Logic (FIXED)
+  const sortedTexts = [...pastedTexts].slice().sort((a, b) => {
+    if (sortType === "name") {
+      return isAscending
+        ? a.displayName.localeCompare(b.displayName)
+        : b.displayName.localeCompare(a.displayName);
+    } else {
+      return isAscending
+        ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    }
+  });
+
+  // ✅ Debug Sorting Updates
   useEffect(() => {
-    // Show cards after they're added
+    console.log("🔄 Sorting Updated:", { sortType, isAscending });
+  }, [sortType, isAscending]);
+
+  // ✅ Animate Cards Appearing
+  useEffect(() => {
     const timer = setTimeout(() => {
-      setVisibleCards(new Set(pastedTexts.map((_, i) => i)));
+      setVisibleCards(new Set(sortedTexts.map((_, i) => i)));
     }, 50);
     return () => clearTimeout(timer);
-  }, [pastedTexts]);
+  }, [sortedTexts]);
 
   return (
     <div>
@@ -104,7 +129,7 @@ const PasteContainer = () => {
       />
 
       <div className="paste-container">
-        {pastedTexts.map((item, index) => (
+        {sortedTexts.map((item, index) => (
           <div
             key={index}
             className={`paste-card ${visibleCards.has(index) ? "show" : ""}`}

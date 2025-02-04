@@ -6,7 +6,7 @@ import clipboardImg from "../assets/clipboard-img.png"; // ✅ Import the image
 import "./Header.css";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // ✅ Default state set to OPEN
 
   return (
     <header className="app-header">
@@ -18,21 +18,26 @@ const Header = () => {
 
       {/* 🔹 Accordion Toggle Button */}
       <button className="accordion-toggle" onClick={() => setIsOpen(!isOpen)}>
-        How does it work?{" "}
+        {isOpen ? "Hide instructions" : "How does it work?"}{" "}
         <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
       </button>
 
-      {/* 🔹 Accordion Content */}
+      {/* 🔹 Accordion Content (Starts Open) */}
       {isOpen && (
         <div className="instructions">
           <p>
-            Copy any text, then press <strong>Ctrl + V</strong> (or{" "}
-            <strong>Cmd + V</strong> on Mac) on this screen to save it.
+            <strong>Step 1:</strong> Copy any text, then press{" "}
+            <strong>Ctrl + V</strong> (or <strong>Cmd + V</strong> on Mac) on
+            this screen to save it.
           </p>
           <p>
-            Name your saved text in the pop-up, and it will be stored below.
+            <strong>Step 2:</strong> Name your saved text in the pop-up, and it
+            will be stored below.
           </p>
-          <p>Click the clipboard icon to copy the original text anytime.</p>
+          <p>
+            <strong>Step 3:</strong> Click the clipboard icon to copy the
+            original text anytime.
+          </p>
 
           {/* 🔹 Background Glowing Spheres (Behind Image) */}
           <div className="glow-sphere sphere-1"></div>

@@ -1,16 +1,15 @@
 /* src/components/Toast.css */
-
 .toast {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
-  background: #ffffff; /* ✅ White background */
+  background: #ffffff;
   color: #1c1f37;
   display: flex;
   align-items: center;
-  padding: 4px 8px; /* ✅ Added padding */
-  border-radius: 8px; /* ✅ Rounded edges */
+  padding: 16px;
+  border-radius: 8px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
   opacity: 0;
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
