@@ -6,14 +6,15 @@
 }
 
 .app-title {
-  font-size: 28px;
+  font-size: 3rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 32px;
+  color: #fff;
 }
 
 /* Accordion Toggle Button */
 .accordion-toggle {
-  background-color: #303030;
+  background-color: #1c1f37;
   color: #ececec;
   border: none;
   padding: 10px 16px;
@@ -28,7 +29,7 @@
 }
 
 .accordion-toggle:hover {
-  background-color: #3a3a3a;
+  background-color: #30355d;
 }
 
 /* Instructions Section */
@@ -38,7 +39,23 @@
   max-width: 700px;
   margin: 10px auto;
   text-align: left;
-  background-color: #292929;
-  padding: 12px;
+  background-color: #1c1f37;
+  padding: 32px;
   border-radius: 8px;
+  position: relative; /* ✅ Ensure the image is positioned relative to this container */
+}
+
+/* 🔹 Clipboard Image Styling */
+.clipboard-img {
+  position: absolute;
+  bottom: -130px; /* Move slightly below the container */
+  right: -100px; /* Move slightly to the right */
+  width: 250px; /* ✅ Adjust size as needed */
+  opacity: 0.9; /* Slight transparency */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* 🔹 Hover Effect for Image */
+.clipboard-img:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
 }
