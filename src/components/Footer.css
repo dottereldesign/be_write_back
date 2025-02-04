@@ -1,0 +1,80 @@
+/* src/components/Footer.css */
+
+.footer {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #b0b0b0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-wrap: wrap;
+  text-align: center;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 90vw;
+}
+
+span {
+  margin: 4px 8px;
+}
+
+/* Individual footer lines */
+.footer-line {
+  white-space: nowrap;
+}
+
+/* GitHub icon styling */
+.footer a {
+  color: #b0b0b0;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer a:hover {
+  color: #ffffff;
+}
+
+.github-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  transition: transform 0.2s ease-in-out;
+}
+
+.github-icon:hover {
+  transform: scale(1.1);
+}
+
+/* 🔹 Mobile (Max 600px) → Break into 3 rows */
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* 🔹 Tablet (601px - 900px) → Break into 2 rows */
+@media (min-width: 601px) and (max-width: 900px) {
+  .footer {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .footer-line:nth-child(3) {
+    flex-basis: 100%; /* Moves the last item (GitHub) to the second row */
+    text-align: center;
+  }
+}
+
+/* 🔹 Desktop (901px and above) → 1 row */
+@media (min-width: 901px) {
+  .footer {
+    flex-direction: row;
+    gap: 12px;
+  }
+}

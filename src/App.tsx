@@ -1,12 +1,15 @@
 // src/App.tsx
+import Header from "./components/Header"; // ✅ Import Header Component
 import PasteContainer from "./components/PasteContainer";
-import "./index.css"; // No need for App.css anymore
+import Footer from "./components/Footer";
+import "./index.css";
 
 function App() {
   return (
     <div id="root">
-      <h1 className="app-title">brb, saving that</h1>
+      <Header /> {/* ✅ Replaces title + instructions */}
       <PasteContainer />
+      <Footer />
     </div>
   );
 }

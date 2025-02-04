@@ -6,7 +6,7 @@ interface NameModalProps {
   onSave: (name: string) => void;
   onClose: () => void;
   isOpen: boolean;
-  pastedText: string | null; // 🔹 Add pastedText prop
+  pastedText: string | null;
 }
 
 const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
@@ -18,20 +18,28 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
       console.log("🟢 MODAL OPENED. Resetting name field.");
       setTimeout(() => setName(""), 0); // 🔹 Force reset with slight delay
     }
-  }, [isOpen, pastedText]); // ✅ Runs every time modal opens or pasted text changes
+  }, [isOpen, pastedText]);
+
+  // 🔹 Handle Escape Key to Close Modal
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        console.log("❌ ESCAPE PRESSED: Closing modal.");
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
 
   const handleSave = () => {
     console.log("✅ SAVING NAME:", name);
     if (name.trim()) {
       onSave(name.trim());
       onClose();
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      console.log("⌨️ ENTER PRESSED: Saving name.");
-      handleSave();
     }
   };
 
@@ -43,20 +51,17 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
           type="text"
           placeholder="Enter a name..."
           value={name}
-          onChange={(e) => {
-            console.log("✏️ Previous Input Value:", name);
-            console.log("✏️ New Input Value:", e.target.value);
-            setName(e.target.value);
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") handleSave();
           }}
-          onKeyDown={handleKeyDown}
           autoFocus
           autoComplete="off"
           spellCheck="false"
         />
-
         <div className="modal-buttons">
           <button onClick={handleSave}>Save</button>
-          <button onClick={onClose}>Cancel</button>
+          <button onClick={onClose}>Cancel (Esc)</button>
         </div>
       </div>
     </div>

@@ -11,8 +11,9 @@
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* ✅ Modernized Paste Card Styling (Retains Original Dimensions) */
 .paste-card {
-  background-color: #303030;
+  background-color: #303030; /* Keeping original color */
   color: #ececec;
   padding: 16px;
   border-radius: 16px;
@@ -23,9 +24,32 @@
   box-sizing: border-box;
   position: relative;
   margin: 0 auto; /* Center on mobile */
+
+  /* ✅ Animated Entrance */
+  transform: scale(0.95);
+  opacity: 0;
+  transition: opacity 0.5s ease-out,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease-in-out;
+
+  /* ✅ Clean Box Shadow for Depth */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3),
+    /* Soft outer shadow */ inset 0px 1px 2px rgba(255, 255, 255, 0.08); /* Subtle inner glow */
 }
 
-/* Position timestamp at the top */
+/* ✅ When Card Becomes Visible */
+.paste-card.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ✅ Hover Effect (Refined & Subtle) */
+.paste-card:hover {
+  box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.4),
+    inset 0px 2px 4px rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* 🔹 Timestamp Styling */
 .timestamp {
   font-size: 10px;
   color: #b0b0b0;
@@ -33,7 +57,7 @@
   text-align: left;
 }
 
-/* Clipboard icon (top-right) */
+/* 🔹 Clipboard Icon (Top-right) */
 .copy-icon {
   position: absolute;
   top: 12px;
@@ -48,15 +72,37 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Ensure text is below timestamp */
+/* 🔹 Ensure Text Stays Below Timestamp */
 .pasted-text {
   margin-top: 4px;
   word-break: break-word;
-  text-align: left;;
+  text-align: left;
 }
 
-/* 🔹 RESPONSIVE DESIGN */
-/* When screen width is larger than 600px, align items to the left */
+/* 🔹 Sorting Buttons */
+.sort-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sort-buttons button {
+  background-color: #303030;
+  color: #ececec;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.sort-buttons button:hover {
+  background-color: #3a3a3a;
+  transform: scale(1.05);
+}
+
+/* ✅ RESPONSIVE DESIGN */
 @media (min-width: 570px) {
   .paste-container {
     justify-content: flex-start; /* Align items to the left */
