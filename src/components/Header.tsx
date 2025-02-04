@@ -12,13 +12,13 @@ const Header = () => {
     <header className="app-header">
       {/* 🔹 Main Title */}
       <div className="title-container">
-        <h1 className="app-title">brb, saving that</h1>
+        <h1 className="app-title">be write back</h1>
         <span className="subtitle-jp">書いて戻ります</span>
       </div>
 
       {/* 🔹 Accordion Toggle Button */}
       <button className="accordion-toggle" onClick={() => setIsOpen(!isOpen)}>
-        How does this work?{" "}
+        How does it work?{" "}
         <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
       </button>
 

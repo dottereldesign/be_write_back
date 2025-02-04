@@ -1,5 +1,7 @@
 // src/components/Toast.tsx
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./Toast.css";
 
 interface ToastProps {
@@ -13,21 +15,21 @@ const Toast = ({ message, onClose }: ToastProps) => {
 
   useEffect(() => {
     console.log("🔵 [Toast] New message received:", message);
-    setVisible(true); // Show toast
-    setFadeOut(false); // Reset fade-out
+    setVisible(true);
+    setFadeOut(false);
 
     console.log("🟢 [Toast] Toast is now visible.");
 
     const fadeOutTimer = setTimeout(() => {
       console.log("🟠 [Toast] Starting fade-out...");
       setFadeOut(true);
-    }, 2000); // Start fade-out after 2 seconds
+    }, 2000);
 
     const removeToastTimer = setTimeout(() => {
       console.log("🔴 [Toast] Removing toast from UI.");
       setVisible(false);
       onClose();
-    }, 2500); // Remove toast after fade-out completes
+    }, 2500);
 
     return () => {
       console.log("⚪ [Toast] Cleanup: Clearing timers.");
@@ -37,7 +39,20 @@ const Toast = ({ message, onClose }: ToastProps) => {
   }, [message, onClose]);
 
   return visible ? (
-    <div className={`toast ${fadeOut ? "hide" : "show"}`}>{message}</div>
+    <div className={`toast ${fadeOut ? "hide" : "show"}`}>
+      {/* ✅ Green Tick Circle */}
+      <div className="toast-icon">
+        <FontAwesomeIcon icon={faCheckCircle} />
+      </div>
+
+      {/* ✅ Message */}
+      <span className="toast-message">{message}</span>
+
+      {/* ✅ Close Button (Top Right) */}
+      <button className="toast-close" onClick={onClose}>
+        <FontAwesomeIcon icon={faTimes} />
+      </button>
+    </div>
   ) : null;
 };
 

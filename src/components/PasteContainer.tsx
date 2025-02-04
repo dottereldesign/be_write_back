@@ -71,7 +71,7 @@ const PasteContainer = () => {
 
   const copyToClipboard = (text: string, displayName: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      setToastMessage(`📋 Copied "${displayName}" to clipboard!`);
+      setToastMessage(`Copied contents of "${displayName}" to clipboard!`);
       setShowToast(true);
     });
   };
