@@ -1,4 +1,4 @@
-// src/components/PasteContainer.tsx
+// src/components/Board.tsx
 import { useState, useEffect } from "react";
 import {
   DndContext,
@@ -14,11 +14,12 @@ import {
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
 import Toast from "./Toast";
-import SortablePasteCard from "./SortablePasteCard";
+import SortablePasteCard from "./Card";
 import ClearButton from "./ClearButton"; // ✅ Import Clear Button
 import { useToast } from "../hooks/useToast";
 import { useDraggableList } from "../hooks/useDraggableList";
-import "../styles/PasteContainer.css";
+import "../styles/Board.css";
+import { useCallback } from "react"; // ✅ Import useCallback
 
 interface PastedItem {
   id: string;
@@ -88,11 +89,14 @@ const PasteContainer = () => {
     setShowModal(false);
   };
 
-  const copyToClipboard = (text: string, displayName: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      triggerToast(`Copied contents of "${displayName}" to clipboard!`);
-    });
-  };
+  const copyToClipboard = useCallback(
+    (text: string, displayName: string) => {
+      navigator.clipboard.writeText(text).then(() => {
+        triggerToast(`Copied contents of "${displayName}" to clipboard!`);
+      });
+    },
+    [triggerToast]
+  ); // ✅ Dependencies to prevent unnecessary recreation
 
   const handleClearAll = () => {
     setPastedTexts([]); // Clear state

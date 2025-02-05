@@ -1,6 +1,6 @@
 // src/App.tsx
 import Header from "./components/Header";
-import PasteContainer from "./components/PasteContainer"; // ✅ Now this works!
+import PasteContainer from "./components/Board"; // ✅ Now this works!
 import Footer from "./components/Footer";
 import "./index.css";
 
