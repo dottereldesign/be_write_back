@@ -1,5 +1,5 @@
-// src/components/ClearButton.tsx
-import "../styles/ClearButton.css";
+// src/components/Board/ClearButton.tsx
+import "../../styles/ClearButton.css";
 
 const ClearButton = ({ onClear }: { onClear: () => void }) => {
   return (

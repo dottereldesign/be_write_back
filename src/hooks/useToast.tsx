@@ -11,8 +11,13 @@ export function useToast() {
     setShowToast(true);
 
     setTimeout(() => {
-      console.log("⏳ Toast will disappear in 2.5s");
+      console.log("🟠 [Toast] Starting fade-out...");
       setShowToast(false);
+    }, 2000);
+
+    setTimeout(() => {
+      console.log("🔴 [Toast] Removing toast from UI.");
+      setToastMessage(null); // ✅ Only clear message after the fade-out
     }, 2500);
   };
 

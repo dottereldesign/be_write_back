@@ -1,6 +1,6 @@
-// src/components/NameModal.tsx
+// src/components/Board/NameModal.tsx
 import { useState, useEffect } from "react";
-import "../styles/NameModal.css";
+import "../../styles/NameModal.css";
 
 interface NameModalProps {
   onSave: (name: string) => void;

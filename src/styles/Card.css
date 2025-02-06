@@ -2,42 +2,22 @@
   display: grid;
   grid-template-columns: auto 1fr auto; /* Three columns */
   grid-template-rows: auto auto; /* Two rows */
-  gap: 0px; /* Space between items */
-  align-items: center;
   background-color: #303030;
   color: #ececec;
   padding: 8px;
   border-radius: 8px;
   word-wrap: break-word;
-  min-width: 200px;
-  max-width: 230px;
-  flex: 1 1 auto;
+  width: 100%;
   box-sizing: border-box;
-  position: relative;
-  margin: 0 auto;
-  transform: scale(0.95);
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.5s ease-out,
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .paste-card.show {
   opacity: 1;
   transform: scale(1);
-}
-
-/* Drag Handle */
-.drag-handle {
-  grid-column: 1;
-  grid-row: 1;
-  cursor: grab;
-  color: #b0b0b0;
-  font-size: 20px;
-  transition: color 0.2s;
-}
-
-.drag-handle:hover {
-  color: #ececec;
 }
 
 /* Timestamp */
