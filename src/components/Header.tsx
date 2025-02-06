@@ -27,15 +27,11 @@ const Header = () => {
         <div className="instructions">
           <span className="step-number">Step 1</span>
           <br></br>
-          <p>
-            Copy any text, then press Ctrl + V (or Cmd + V on Mac) to save it.
-          </p>
+          <p>Paste Text using ctrl+v (or cmd+v on Mac).</p>
           <span className="step-number">Step 2</span> <br></br>
-          <p>
-            Name your saved text in the pop-up, and it will be stored below.
-          </p>
+          <p>Name your saved text in the pop-up, it will be stored below.</p>
           <span className="step-number">Step 3</span>
-          <p>Click the clipboard icon to copy the original text anytime.</p>
+          <p>Copy it again by clicking anywhere on the card.</p>
           {/* 🔹 Background Glowing Spheres (Behind Image) */}
           <div className="glow-sphere sphere-1"></div>
           <div className="glow-sphere sphere-2"></div>
