@@ -1,3 +1,4 @@
+// src/hooks/useClipboardPaste.tsx
 import { useCallback } from "react";
 
 export const useClipboardPaste = (
@@ -8,9 +9,8 @@ export const useClipboardPaste = (
     (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text");
       if (pastedText) {
-        const sanitizedText = pastedText.replace(/<\/?[^>]+(>|$)/g, "").trim();
-        console.log("📋 Pasted Text (Sanitized):", sanitizedText);
-        setNewPaste(sanitizedText);
+        console.log("📋 Pasted Text (Raw):", pastedText);
+        setNewPaste(pastedText); // ✅ Keeps the original text unaltered
         setShowModal(true);
       }
     },

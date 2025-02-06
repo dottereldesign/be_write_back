@@ -1,25 +1,26 @@
 // src/hooks/useToast.ts
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export function useToast() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState<boolean>(false);
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null); // ✅ Use browser-compatible type
 
   const triggerToast = (message: string) => {
     console.log(`🔔 Triggering Toast: "${message}"`);
+
+    // Clear any existing timeouts
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+
     setToastMessage(message);
-    setShowToast(true);
 
-    setTimeout(() => {
-      console.log("🟠 [Toast] Starting fade-out...");
-      setShowToast(false);
-    }, 2000);
-
-    setTimeout(() => {
-      console.log("🔴 [Toast] Removing toast from UI.");
-      setToastMessage(null); // ✅ Only clear message after the fade-out
+    // Set a timeout to clear the toast message
+    toastTimeoutRef.current = setTimeout(() => {
+      console.log("🔴 Clearing toast message");
+      setToastMessage(null);
     }, 2500);
   };
 
-  return { showToast, toastMessage, triggerToast };
+  return { toastMessage, triggerToast };
 }

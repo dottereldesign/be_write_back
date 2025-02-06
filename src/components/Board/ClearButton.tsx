@@ -1,10 +1,12 @@
 // src/components/Board/ClearButton.tsx
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../../styles/ClearButton.css";
 
 const ClearButton = ({ onClear }: { onClear: () => void }) => {
   return (
     <button className="clear-button" onClick={onClear}>
-      🗑 Clear All
+      <FontAwesomeIcon icon={faTrash} /> Clear All
     </button>
   );
 };

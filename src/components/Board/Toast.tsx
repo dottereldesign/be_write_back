@@ -11,78 +11,42 @@ interface ToastProps {
 
 const Toast = ({ message, onClose }: ToastProps) => {
   const [visible, setVisible] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    console.log("🟢 [Toast] Checking for new message:", message);
-    if (!message) {
-      console.log("⚠️ [Toast] No message received. Exiting...");
-      return;
+    if (message) {
+      console.log("🟢 Showing toast with message:", message);
+      setVisible(true);
+
+      const fadeOutTimer = setTimeout(() => {
+        console.log("🟠 Hiding toast");
+        setVisible(false);
+        if (onClose) onClose();
+      }, 2000);
+
+      return () => {
+        clearTimeout(fadeOutTimer);
+      };
     }
-
-    console.log("🔵 [Toast] New message received:", message);
-    setVisible(true);
-    setFadeOut(false);
-
-    console.log("🟢 [Toast] Toast is now visible.");
-
-    const fadeOutTimer = setTimeout(() => {
-      console.log("🟠 [Toast] Starting fade-out...");
-      setFadeOut(true);
-    }, 2000);
-
-    const removeToastTimer = setTimeout(() => {
-      console.log("🔴 [Toast] Removing toast from UI.");
-      setVisible(false);
-      if (onClose) {
-        console.log("🚀 [Toast] Calling onClose()");
-        onClose();
-      }
-    }, 2500);
-
-    return () => {
-      console.log("⚪ [Toast] Cleanup: Clearing timers.");
-      clearTimeout(fadeOutTimer);
-      clearTimeout(removeToastTimer);
-    };
   }, [message, onClose]);
 
-  console.log(
-    "🎭 [Toast] Render State - visible:",
-    visible,
-    "fadeOut:",
-    fadeOut
-  );
-
-  return visible ? (
-    <div className={`toast ${fadeOut ? "hide" : "show"}`}>
-      {/* ✅ Green Tick Circle */}
+  return (
+    <div className={`toast ${visible ? "show" : "hide"}`}>
       <div className="toast-icon">
         <FontAwesomeIcon icon={faCheck} />
       </div>
-
-      {/* ✅ Message */}
       <span className="toast-message">{message}</span>
-
-      {/* ✅ Close Button (Top Right) */}
       <button
         className="toast-close"
         onClick={() => {
-          console.log("❌ [Toast] Close button clicked!");
-          setFadeOut(true);
-          setTimeout(() => {
-            setVisible(false);
-            if (onClose) {
-              console.log("🚀 [Toast] Calling onClose() from close button");
-              onClose();
-            }
-          }, 500);
+          console.log("❌ Manually closing toast");
+          setVisible(false);
+          if (onClose) onClose();
         }}
       >
         <FontAwesomeIcon icon={faTimes} />
       </button>
     </div>
-  ) : null;
+  );
 };
 
 export default Toast;

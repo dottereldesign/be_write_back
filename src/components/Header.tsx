@@ -25,31 +25,26 @@ const Header = () => {
       {/* 🔹 Accordion Content (Starts Open) */}
       {isOpen && (
         <div className="instructions">
+          <span className="step-number">Step 1</span>
+          <br></br>
           <p>
-            <strong>Step 1:</strong> Copy any text, then press{" "}
-            <strong>Ctrl + V</strong> (or <strong>Cmd + V</strong> on Mac) on
-            this screen to save it.
+            Copy any text, then press Ctrl + V (or Cmd + V on Mac) to save it.
           </p>
+          <span className="step-number">Step 2</span> <br></br>
           <p>
-            <strong>Step 2:</strong> Name your saved text in the pop-up, and it
-            will be stored below.
+            Name your saved text in the pop-up, and it will be stored below.
           </p>
-          <p>
-            <strong>Step 3:</strong> Click the clipboard icon to copy the
-            original text anytime.
-          </p>
-
+          <span className="step-number">Step 3</span>
+          <p>Click the clipboard icon to copy the original text anytime.</p>
           {/* 🔹 Background Glowing Spheres (Behind Image) */}
           <div className="glow-sphere sphere-1"></div>
           <div className="glow-sphere sphere-2"></div>
-
           {/* 🔹 Clipboard Image */}
           <img
             src={clipboardImg}
             alt="Clipboard Instructions"
             className="clipboard-img"
           />
-
           {/* 🔹 Foreground Glowing Spheres (Above Image) */}
           <div className="glow-sphere sphere-3"></div>
           <div className="glow-sphere sphere-4"></div>

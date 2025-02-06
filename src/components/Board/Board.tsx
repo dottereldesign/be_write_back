@@ -14,12 +14,11 @@ import { useClipboard } from "../../hooks/useClipboard";
 import "../../styles/Board.css";
 import { PastedItem } from "../../types/PastedItem";
 
-const LOCAL_STORAGE_KEY = "pastedTexts"; // ✅ Define a key for localStorage
+const LOCAL_STORAGE_KEY = "pastedTexts";
 
 const PasteContainer = () => {
   console.log("📌 Rendering PasteContainer");
 
-  // ✅ Load saved pastes from localStorage when the app starts
   const [pastedTexts, setItems] = useState<PastedItem[]>(() => {
     console.log("🔄 Loading pastes from localStorage...");
     const savedPastes = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -28,12 +27,11 @@ const PasteContainer = () => {
 
   const { sortedItems, handleSortChange, sortType, isAscending } =
     useSorting(pastedTexts);
-
   const { handleClearAll } = useClearPastes(setItems);
   const { newPaste, setNewPaste, showModal, setShowModal, handleSaveName } =
     useSavePaste(setItems);
   const { copyToClipboard } = useClipboard();
-  const { toastMessage } = useToast(); // ✅ Listen for toast events
+  const { toastMessage, triggerToast } = useToast();
   const { handlePaste } = useClipboardPaste(setNewPaste, setShowModal);
 
   useEffect(() => {
@@ -45,13 +43,10 @@ const PasteContainer = () => {
     };
   }, [handlePaste]);
 
-  // ✅ Save pasted texts to localStorage whenever `pastedTexts` changes
   useEffect(() => {
     console.log("💾 Saving pastes to localStorage:", pastedTexts);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(pastedTexts));
   }, [pastedTexts]);
-
-  console.log("🎭 Toast Message State:", toastMessage);
 
   return (
     <div>
@@ -71,13 +66,20 @@ const PasteContainer = () => {
 
       <div className="paste-container">
         {sortedItems.map((item) => (
-          <Card key={item.id} item={item} copyToClipboard={copyToClipboard} />
+          <Card
+            key={item.id}
+            item={item}
+            copyToClipboard={(text, displayName) => {
+              copyToClipboard(text, displayName);
+              triggerToast(`Copied "${displayName}" to clipboard!`);
+            }}
+          />
         ))}
       </div>
 
       <ClearButton onClear={handleClearAll} />
 
-      {/* ✅ Ensure Toast is always in the DOM */}
+      {/* Keep Toast always in the DOM */}
       <Toast
         message={toastMessage}
         onClose={() => console.log("🚀 Toast closed")}

@@ -2,7 +2,7 @@
 .clear-button {
   display: block;
   width: 160px;
-  padding: 10px;
+  padding: 8px 0;
   margin: 20px auto;
   background-color: #d9534f; /* Red */
   color: white;
