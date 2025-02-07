@@ -41,7 +41,7 @@ const Header = () => {
       {isOpen && (
         <div className="instructions">
           <span className="step-number">Step 1</span>
-          <p>Paste Text using ctrl+v (or cmd+v on Mac).</p>
+          <p>Paste text using ctrl+v (or cmd+v on Mac).</p>
 
           <span className="step-number">Step 2</span>
           <p>Name your saved text in the pop-up, it will be stored below.</p>
