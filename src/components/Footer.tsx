@@ -8,7 +8,7 @@ const Footer = () => {
       <span className="footer-line">
         Deployed via{" "}
         <a
-          href="https://github.com/dottereldesign/brbsavingthat"
+          href="https://github.com/dottereldesign/be_write_back"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub Repository"
