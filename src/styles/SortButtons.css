@@ -1,24 +1,27 @@
 /* src/styles/SortButtons.css */
 .sort-buttons {
-  display: flex;
-  justify-content: center;
   gap: 12px;
-  margin-bottom: 16px;
+  width: 100%;
   z-index: 10;
   position: relative;
+  display: flex !important;
+  align-items: left;
+  justify-content: left;
 }
 
 .sort-buttons button {
+  display: flex;
   background-color: #303030;
   color: #ececec;
   border: none;
-  padding: 8px 14px;
+
   cursor: pointer;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
   transition: background-color 0.2s;
+  width: 40px;
+  height: 40px;
 }
 
 .sort-buttons button:hover {
@@ -26,5 +29,24 @@
 }
 
 .sort-buttons svg {
-  font-size: 16px;
+  font-size: 24px;
+}
+
+/* 🔹 Container for SortButtons & ClearButton */
+.buttons-row {
+  display: flex !important;
+  width: min(100%, 1000px); /* ✅ Limit width to 500px */
+  margin-bottom: 10px;
+}
+
+/* 🔹 Align Sort Buttons to the left */
+.sort-buttons {
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+
+/* 🔹 Align Clear Button to the right */
+.clear-button {
+  margin-left: auto; /* ✅ Pushes it to the right */
 }

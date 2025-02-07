@@ -29,7 +29,6 @@ const SortButtons = ({
               : faSortAlphaDown
           }
         />
-        Sort A-Z / Z-A
       </button>
 
       <button onClick={() => onSortChange("timestamp")}>
@@ -40,7 +39,6 @@ const SortButtons = ({
               : faSortNumericDown
           }
         />
-        Sort by Date
       </button>
     </div>
   );

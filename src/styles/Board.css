@@ -42,12 +42,3 @@
 
   margin-bottom: 10px;
 }
-
-/* 🔹 Ensure Sort Buttons stay in the center */
-.buttons-row > *:first-child {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center; /* Center the sort buttons */
-}
-
-/* 🔹 Align Clear Button to the right */
