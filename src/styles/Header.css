@@ -46,11 +46,11 @@
 /* ✅ Tagline below title */
 /* ✅ Tagline below title with Nanum Pen Script */
 .tagline {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  font-family: "Nanum Pen Script", cursive; /* ✅ Apply Google Font */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* ✅ Apply Google Font */
   color: #7065e2; /* Subtle contrast */
-  margin-top: 4px; /* Small spacing */
+  margin: 0 0 16px 0;
   text-align: center;
 }
 

@@ -1,24 +1,28 @@
 /* Modal Overlay */
+/* ✅ Modal Overlay (Covers Full Screen Without Moving Content) */
 .confirm-modal-overlay {
-  position: fixed;
+  position: fixed; /* ✅ Keeps it in place */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background: rgba(0, 0, 0, 0.5); /* ✅ Dark overlay effect */
   z-index: 1000;
 }
 
-/* Modal Box */
+/* ✅ Modal Box */
 .confirm-modal {
   background: #303030;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
-  width: 300px;
+  width: 320px;
+  max-width: 90%; /* ✅ Ensures it doesn't exceed screen width */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 

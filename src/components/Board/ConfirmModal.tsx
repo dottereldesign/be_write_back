@@ -1,4 +1,5 @@
 // src/components/Board/ConfirmModal.tsx
+import { useEffect } from "react";
 import "../../styles/ConfirmModal.css";
 
 interface ConfirmModalProps {
@@ -8,6 +9,25 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
+  // ✅ Add event listeners for Enter and Escape keys
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        onConfirm(); // Confirm action when Enter is pressed
+      } else if (event.key === "Escape") {
+        onCancel(); // Cancel action when Escape is pressed
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onConfirm, onCancel]);
+
   if (!isOpen) return null;
 
   return (

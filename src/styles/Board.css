@@ -39,8 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center; /* Center the sort buttons */
-  width: 100%;
-  position: relative;
+
   margin-bottom: 10px;
 }
 
@@ -52,7 +51,3 @@
 }
 
 /* 🔹 Align Clear Button to the right */
-.buttons-row > *:last-child {
-  position: absolute;
-  right: 0;
-}
