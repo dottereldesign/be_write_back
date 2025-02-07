@@ -78,3 +78,21 @@ span {
     gap: 12px;
   }
 }
+/* ☕ Buy Me a Coffee Button */
+.coffee-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.coffee-button:hover {
+  transform: scale(1.1);
+}
+
+/* ✅ Make sure the image is not too big */
+.coffee-icon {
+  height: 35px;
+  width: auto;
+  border-radius: 8px;
+}

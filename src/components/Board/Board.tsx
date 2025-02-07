@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
-import PasteButton from "./PasteButton"; // ✅ Import Paste Button
+import PasteButton from "./PasteButton";
+import SearchBar from "./SearchBar"; // ✅ Import SearchBar
 import Toast from "./Toast";
 import Card from "./Card";
 import ClearButton from "./ClearButton";
@@ -25,6 +26,8 @@ const PasteContainer = () => {
     const savedPastes = localStorage.getItem(LOCAL_STORAGE_KEY);
     return savedPastes ? JSON.parse(savedPastes) : [];
   });
+
+  const [searchQuery, setSearchQuery] = useState(""); // ✅ Search term state
 
   const { sortedItems, handleSortChange, sortType, isAscending } =
     useSorting(pastedTexts);
@@ -67,6 +70,11 @@ const PasteContainer = () => {
       });
   };
 
+  // ✅ Filter cards based on search query
+  const filteredItems = sortedItems.filter((item) =>
+    item.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="paste-container-wrapper">
       {showModal && (
@@ -91,11 +99,12 @@ const PasteContainer = () => {
           sortType={sortType}
           isAscending={isAscending}
         />
+        <SearchBar onSearch={setSearchQuery} /> {/* ✅ Search Bar */}
         <ClearButton onClear={() => handleClearAll()} />
       </div>
 
       <div className="paste-container">
-        {sortedItems.map((item) => {
+        {filteredItems.map((item) => {
           const truncatedName =
             item.displayName.length > 10
               ? item.displayName.substring(0, 10) + "..."
