@@ -7,16 +7,18 @@
 
 /* ✅ Title Container */
 .title-container {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   position: relative;
   text-align: left;
+  align-items: center;
 }
 
 /* ✅ Main Title */
 .app-title {
   font-size: 3rem;
   font-weight: bold;
-  margin-bottom: 32px;
+  width: fit-content;
   color: #fff;
   position: relative;
   display: inline-block;
@@ -25,12 +27,31 @@
 /* ✅ Japanese Subtitle - Positioned Bottom-Right */
 .subtitle-jp {
   position: absolute;
-  bottom: 16px; /* ✅ Slightly below main title */
-  right: -10px; /* ✅ Aligned to the right of the main title */
+  bottom: 20px; /* ✅ Slightly below main title */
+  right: 0px; /* ✅ Aligned to the right of the main title */
   font-size: 0.8rem;
   color: #9fa8da; /* ✅ Subtle blue-purple tone */
   font-weight: 500;
   letter-spacing: 1px;
+  padding: 0;
+  margin: 0;
+}
+
+.title-wrapper {
+  position: relative;
+
+  width: fit-content;
+}
+
+/* ✅ Tagline below title */
+/* ✅ Tagline below title with Nanum Pen Script */
+.tagline {
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: "Nanum Pen Script", cursive; /* ✅ Apply Google Font */
+  color: #7065e2; /* Subtle contrast */
+  margin-top: 4px; /* Small spacing */
+  text-align: center;
 }
 
 /* Accordion Toggle Button */

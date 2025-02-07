@@ -63,28 +63,38 @@ const PasteContainer = () => {
         message={toastMessage}
         onClose={() => console.log("🚀 Toast closed")}
       />
-      <SortButtons
-        onSortChange={handleSortChange}
-        sortType={sortType}
-        isAscending={isAscending}
-      />
 
-      <div className="paste-container">
-        {sortedItems.map((item) => (
-          <Card
-            key={item.id}
-            item={item}
-            copyToClipboard={(text, displayName) => {
-              copyToClipboard(text, displayName);
-              triggerToast(
-                `Copied the contents of ${displayName} to your clipboard!`
-              );
-            }}
-          />
-        ))}
+      {/* 🔹 Buttons Row */}
+      <div className="buttons-row">
+        <SortButtons
+          onSortChange={handleSortChange}
+          sortType={sortType}
+          isAscending={isAscending}
+        />
+        <ClearButton onClear={() => handleClearAll()} />
       </div>
 
-      <ClearButton onClear={() => handleClearAll()} />
+      <div className="paste-container">
+        {sortedItems.map((item) => {
+          const truncatedName =
+            item.displayName.length > 10
+              ? item.displayName.substring(0, 10) + "..."
+              : item.displayName;
+
+          return (
+            <Card
+              key={item.id}
+              item={item}
+              copyToClipboard={(text) => {
+                copyToClipboard(text, item.displayName);
+                triggerToast(
+                  `Copied the contents of ${truncatedName} to your clipboard!`
+                );
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -4,8 +4,8 @@
   display: flex;
   justify-content: center; /* ✅ Centers horizontally */
   align-items: center;
-  width: 100%; /* ✅ Allows it to be centered relative to parent */
-  max-width: 350px;
+  width: fit-content; /* ✅ Allows it to be centered relative to parent */
+
   background: #ffffff;
   color: #1c1f37;
   padding: 8px;

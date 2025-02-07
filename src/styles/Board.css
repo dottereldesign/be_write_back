@@ -34,3 +34,25 @@
 
   gap: 12px;
 }
+/* 🔹 Container for SortButtons & ClearButton */
+.buttons-row {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the sort buttons */
+  width: 100%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+/* 🔹 Ensure Sort Buttons stay in the center */
+.buttons-row > *:first-child {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center; /* Center the sort buttons */
+}
+
+/* 🔹 Align Clear Button to the right */
+.buttons-row > *:last-child {
+  position: absolute;
+  right: 0;
+}
