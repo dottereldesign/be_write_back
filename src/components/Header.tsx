@@ -12,7 +12,7 @@ const Header = () => {
     <header className="app-header">
       {/* 🔹 Main Title */}
       <div className="title-container">
-        <h1 className="app-title">be write back</h1>
+        <h1 className="app-title">bewriteback</h1>
         <span className="subtitle-jp">書いて戻ります</span>
       </div>
 

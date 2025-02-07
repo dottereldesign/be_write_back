@@ -49,7 +49,7 @@ const PasteContainer = () => {
   }, [pastedTexts]);
 
   return (
-    <div>
+    <div className="paste-container-wrapper">
       {showModal && (
         <NameModal
           isOpen={showModal}
@@ -58,6 +58,11 @@ const PasteContainer = () => {
           onClose={() => setShowModal(false)}
         />
       )}
+      {/* Keep Toast always in the DOM */}
+      <Toast
+        message={toastMessage}
+        onClose={() => console.log("🚀 Toast closed")}
+      />
       <SortButtons
         onSortChange={handleSortChange}
         sortType={sortType}
@@ -71,19 +76,15 @@ const PasteContainer = () => {
             item={item}
             copyToClipboard={(text, displayName) => {
               copyToClipboard(text, displayName);
-              triggerToast(`Copied "${displayName}" to clipboard!`);
+              triggerToast(
+                `Copied the contents of ${displayName} to your clipboard!`
+              );
             }}
           />
         ))}
       </div>
 
-      <ClearButton onClear={handleClearAll} />
-
-      {/* Keep Toast always in the DOM */}
-      <Toast
-        message={toastMessage}
-        onClose={() => console.log("🚀 Toast closed")}
-      />
+      <ClearButton onClear={() => handleClearAll()} />
     </div>
   );
 };
