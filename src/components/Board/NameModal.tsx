@@ -60,7 +60,7 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
           spellCheck="false"
         />
         <div className="modal-buttons">
-          <button onClick={handleSave}>Save</button>
+          <button onClick={handleSave}>Save (Enter)</button>
           <button onClick={onClose}>Cancel (Esc)</button>
         </div>
       </div>

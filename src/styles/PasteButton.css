@@ -1,0 +1,26 @@
+/* src/styles/PasteButton.css */
+.paste-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 12px;
+  margin-right: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #267d3c; /* Dark background */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.paste-button:hover {
+  background-color: #32aa50;
+}
+
+/* ✅ Paste Icon */
+.paste-icon {
+  font-size: 24px;
+}

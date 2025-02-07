@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
+import PasteButton from "./PasteButton"; // ✅ Import Paste Button
 import Toast from "./Toast";
 import Card from "./Card";
 import ClearButton from "./ClearButton";
@@ -48,6 +49,24 @@ const PasteContainer = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(pastedTexts));
   }, [pastedTexts]);
 
+  // ✅ Manually trigger paste event when "Paste" button is clicked
+  const triggerPaste = () => {
+    console.log("🟢 Triggering paste event...");
+    navigator.clipboard
+      .readText()
+      .then((text) => {
+        if (text) {
+          console.log("📋 Pasted Text:", text);
+          setNewPaste(text);
+          setShowModal(true);
+        }
+      })
+      .catch((error) => {
+        console.error("❌ Failed to paste:", error);
+        triggerToast("Clipboard access denied!");
+      });
+  };
+
   return (
     <div className="paste-container-wrapper">
       {showModal && (
@@ -66,6 +85,7 @@ const PasteContainer = () => {
 
       {/* 🔹 Buttons Row */}
       <div className="buttons-row">
+        <PasteButton onPaste={triggerPaste} /> {/* ✅ Paste Button */}
         <SortButtons
           onSortChange={handleSortChange}
           sortType={sortType}
