@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/brbsavingthat/", // 🔹 Change this to match your GitHub repo name
+  base: "/be_write_back/", // 🔹 Change this to match your GitHub repo name
 });
