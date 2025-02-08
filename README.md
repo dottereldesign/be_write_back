@@ -1,4 +1,4 @@
-# **be_write_back**
+# **Be Write Back**
 
 🚀 **Quickly save and recall copied text.**
 
