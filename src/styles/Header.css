@@ -2,7 +2,7 @@
 
 .app-header {
   text-align: center;
-  width: 1200px;
+  width: min(100%, 1200px);
   margin: 0 auto;
   margin-bottom: 20px;
 }
@@ -195,6 +195,7 @@
   display: flex;
   justify-content: start;
   margin-top: 16px;
+  width: min(100%, 1200px);
 }
 /* ✅ Brand Text (Two-line next to logo) */
 .brand-text {

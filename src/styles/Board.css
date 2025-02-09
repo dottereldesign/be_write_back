@@ -31,8 +31,10 @@
 .paste-container-wrapper {
   display: flex;
   flex-direction: column;
-
+  width: min(100%, 1200px);
   gap: 12px;
+
+  margin: 0 auto;
 }
 /* 🔹 Container for SortButtons & ClearButton */
 .buttons-row {

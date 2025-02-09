@@ -39,6 +39,8 @@ const Footer = () => {
             src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
             alt="Buy Me A Coffee"
             className="coffee-icon"
+            width="100"
+            height="30"
           />
         </a>
       </span>

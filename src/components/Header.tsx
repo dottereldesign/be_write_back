@@ -5,6 +5,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import clipboardImg from "../assets/clipboard-img.webp"; // ✅ Import the image
 import logo from "/logo.webp"; // ✅ Import the logo
 import "../styles/Header.css"; // ✅ Import the CSS
+import Stars from "./Stars"; // ✅ Import the Stars component
 
 const STORAGE_KEY = "instructionsVisibility";
 
@@ -69,12 +70,15 @@ const Header = () => {
           <div className="glow-sphere sphere-1"></div>
           <div className="glow-sphere sphere-2"></div>
 
-          {/* 🔹 Clipboard Image */}
-          <img
-            src={clipboardImg}
-            alt="Clipboard Instructions"
-            className="clipboard-img"
-          />
+          {/* 🔹 Clipboard Image + Stars */}
+          <div className="clipboard-container">
+            <img
+              src={clipboardImg}
+              alt="Clipboard Instructions"
+              className="clipboard-img"
+            />
+            <Stars /> {/* ✅ Stars positioned over clipboard image */}
+          </div>
 
           {/* 🔹 Foreground Glowing Spheres (Above Image) */}
           <div className="glow-sphere sphere-3"></div>

@@ -14,11 +14,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
   color-scheme: light dark;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+
   min-height: 100vh;
 }
 
