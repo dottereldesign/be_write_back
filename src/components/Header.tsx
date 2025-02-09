@@ -24,7 +24,13 @@ const Header = () => {
     <header className="app-header">
       {/* 🔹 Logo and Brand Name */}
       <div className="logo-wrapper">
-        <img src={logo} alt="Logo" className="app-logo" />
+        <img
+          src={logo}
+          alt="Logo"
+          className="app-logo"
+          width="32"
+          height="32"
+        />
         <div className="brand-text">
           <span className="brand-line">dotterel</span>
           <span className="brand-line">design</span>
