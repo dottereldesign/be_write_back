@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import clipboardImg from "../assets/clipboard-img.png"; // ✅ Import the image
-import logo from "/logo.png"; // ✅ Import the logo
+import clipboardImg from "../assets/clipboard-img.webp"; // ✅ Import the image
+import logo from "/logo.webp"; // ✅ Import the logo
 import "../styles/Header.css"; // ✅ Import the CSS
 
 const STORAGE_KEY = "instructionsVisibility";
