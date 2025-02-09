@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import clipboardImg from "../assets/clipboard-img.png"; // ✅ Import the image
+import logo from "/logo.png"; // ✅ Import the logo
 import "../styles/Header.css"; // ✅ Import the CSS
 
 const STORAGE_KEY = "instructionsVisibility";
@@ -21,6 +22,15 @@ const Header = () => {
 
   return (
     <header className="app-header">
+      {/* 🔹 Logo and Brand Name */}
+      <div className="logo-wrapper">
+        <img src={logo} alt="Logo" className="app-logo" />
+        <div className="brand-text">
+          <span className="brand-line">dotterel</span>
+          <span className="brand-line">design</span>
+        </div>
+      </div>
+
       {/* 🔹 Main Title */}
       <div className="title-container">
         <div className="title-wrapper">

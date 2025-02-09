@@ -2,6 +2,8 @@
 
 .app-header {
   text-align: center;
+  width: 1200px;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 
@@ -22,12 +24,14 @@
   color: #fff;
   position: relative;
   display: inline-block;
+  margin: 0 0 16px 0;
+  line-height: 1;
 }
 
 /* ✅ Japanese Subtitle - Positioned Bottom-Right */
 .subtitle-jp {
   position: absolute;
-  bottom: 20px; /* ✅ Slightly below main title */
+  bottom: 0px; /* ✅ Slightly below main title */
   right: 0px; /* ✅ Aligned to the right of the main title */
   font-size: 0.8rem;
   color: #9fa8da; /* ✅ Subtle blue-purple tone */
@@ -50,7 +54,7 @@
   font-weight: 400;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* ✅ Apply Google Font */
   color: #7065e2; /* Subtle contrast */
-  margin: 0 0 16px 0;
+  margin: 0 0 32px 0;
   text-align: center;
 }
 
@@ -176,3 +180,33 @@
   color: white;
   margin-left: 0px;
 }
+
+/* ✅ Logo Styling */
+.app-logo {
+  top: 20px; /* Adjust based on spacing preference */
+  justify-self: start;
+  left: 20px;
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  z-index: 100;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: start;
+  margin-top: 16px;
+}
+/* ✅ Brand Text (Two-line next to logo) */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: -4px; /* ✅ Adds spacing between logo and text */
+  font-weight: 500;
+  font-family: Inter;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 0.7;
+  text-align: left;
+}
+
+/* ✅ Style individual lines */
