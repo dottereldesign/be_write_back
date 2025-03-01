@@ -24,6 +24,13 @@
   height: 40px;
 }
 
+/* 🔹 Align Sort Buttons to the left */
+.sort-buttons {
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+
 .sort-buttons button:hover {
   background-color: #3a3a3a;
 }
@@ -37,13 +44,6 @@
   display: flex !important;
   width: min(100%, 1200px); /* ✅ Limit width to 500px */
   margin-bottom: 10px;
-}
-
-/* 🔹 Align Sort Buttons to the left */
-.sort-buttons {
-  display: flex;
-  gap: 12px;
-  position: relative;
 }
 
 /* 🔹 Align Clear Button to the right */

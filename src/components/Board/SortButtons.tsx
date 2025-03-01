@@ -20,26 +20,32 @@ const SortButtons = ({
   sortType,
 }: SortButtonsProps) => {
   return (
-    <div className="sort-buttons">
-      <button onClick={() => onSortChange("displayName")}>
-        <FontAwesomeIcon
-          icon={
-            sortType === "displayName" && isAscending
-              ? faSortAlphaUp
-              : faSortAlphaDown
-          }
-        />
-      </button>
+    <div className="sort-buttons-container">
+      {" "}
+      {/* ✅ Added a wrapper */}
+      <span className="sort-label">Sort</span>{" "}
+      {/* ✅ Sort label above buttons */}
+      <div className="sort-buttons">
+        <button onClick={() => onSortChange("displayName")}>
+          <FontAwesomeIcon
+            icon={
+              sortType === "displayName" && isAscending
+                ? faSortAlphaUp
+                : faSortAlphaDown
+            }
+          />
+        </button>
 
-      <button onClick={() => onSortChange("timestamp")}>
-        <FontAwesomeIcon
-          icon={
-            sortType === "timestamp" && isAscending
-              ? faSortNumericUp
-              : faSortNumericDown
-          }
-        />
-      </button>
+        <button onClick={() => onSortChange("timestamp")}>
+          <FontAwesomeIcon
+            icon={
+              sortType === "timestamp" && isAscending
+                ? faSortNumericUp
+                : faSortNumericDown
+            }
+          />
+        </button>
+      </div>
     </div>
   );
 };

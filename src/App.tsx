@@ -8,7 +8,9 @@ function App() {
   return (
     <div id="root">
       <Header />
-      <PasteContainer />
+      <main>
+        <PasteContainer />
+      </main>
       <Footer />
     </div>
   );
