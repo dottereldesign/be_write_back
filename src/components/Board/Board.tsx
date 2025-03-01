@@ -103,7 +103,7 @@ const PasteContainer = () => {
         <ClearButton onClear={() => handleClearAll()} />
       </div>
 
-      <div className="paste-container">
+      <div className="paste-container glassmorphism">
         {filteredItems.map((item) => {
           const truncatedName =
             item.displayName.length > 10

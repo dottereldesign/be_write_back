@@ -1,8 +1,10 @@
-/* Ensure 16px padding on each side */
 .paste-container {
   display: grid;
   position: relative;
   gap: 8px;
+  background-color: #1c1f37 !important;
+  padding: 16px;
+  border-radius: 16px;
 }
 
 /* Make sure the board always has at least one column but expands as needed */

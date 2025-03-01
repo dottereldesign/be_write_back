@@ -20,7 +20,9 @@ body {
 
 /* Main container */
 #root {
-  margin: 0 auto;
-
-  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
 }

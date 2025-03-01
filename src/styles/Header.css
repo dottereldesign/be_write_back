@@ -101,19 +101,57 @@
   margin: 4px 0 16px 0;
 }
 
+/* Prevent scrolling issues */
+body,
+html {
+  overflow-x: hidden; /* Hides horizontal overflow */
+}
+
 /* ✅ Clipboard Image Styling */
 .clipboard-img {
   position: absolute;
-  bottom: -30px;
-  right: -100px;
-  width: 250px;
-  opacity: 0.9;
-  transition: transform 0.3s ease-in-out;
+  bottom: -10px;
+  right: -280px;
+  width: 420px;
+  opacity: 0;
+  transform: translateX(100px); /* Start slightly off-screen */
+  animation: slideIn 0.8s ease-out forwards; /* Animate on load */
+  transition: width 0.3s ease-in-out;
   z-index: 3;
 }
 
-.clipboard-img:hover {
-  transform: scale(1.05);
+/* ✅ Keyframes for sliding in from the right */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateX(0);
+  }
+}
+
+/* ✅ Responsive Adjustments */
+@media screen and (max-width: 1024px) {
+  .clipboard-img {
+    width: 350px;
+    right: -200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .clipboard-img {
+    width: 280px;
+    right: -150px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .clipboard-img {
+    width: 200px;
+    right: -100px;
+  }
 }
 
 /* ✅ Glowing Spheres - Behind the Image */
@@ -211,3 +249,16 @@
 }
 
 /* ✅ Style individual lines */
+
+/* Step and Paragraph Styling */
+.step-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+}
+
+/* When `fade-in` class is added */
+.step-container.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
