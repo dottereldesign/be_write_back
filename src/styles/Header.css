@@ -1,5 +1,8 @@
 /* src/styles/Header.css */
 
+.body {
+}
+
 .app-header {
   text-align: center;
   width: min(100%, 1200px);
@@ -80,16 +83,40 @@
 }
 
 /* Instructions Section */
+@keyframes fadeInBackground {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #1c1f37;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .instructions::before {
+    width: 280px;
+    right: -150px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .instructions::before {
+    width: 200px;
+    right: -100px;
+  }
+}
+
 .instructions {
   font-size: 16px;
   color: #b0b0b0;
   margin: 10px auto;
   text-align: left;
-  background-color: #1c1f37;
   padding: 32px;
   border-radius: 8px;
   position: relative;
   width: 500px;
+  background-color: #1c1f37;
+  animation: fadeInBackground 0.2s ease-in-out;
 }
 
 .instructions p {
@@ -101,23 +128,42 @@
   margin: 4px 0 16px 0;
 }
 
-/* Prevent scrolling issues */
-body,
-html {
-  overflow-x: hidden; /* Hides horizontal overflow */
-}
-
 /* ✅ Clipboard Image Styling */
 .clipboard-img {
   position: absolute;
-  bottom: -10px;
-  right: -280px;
-  width: 420px;
+  bottom: -20px;
+  width: 150px;
+  right: 0px;
   opacity: 0;
   transform: translateX(100px); /* Start slightly off-screen */
   animation: slideIn 0.8s ease-out forwards; /* Animate on load */
   transition: width 0.3s ease-in-out;
   z-index: 3;
+}
+
+@media screen and (min-width: 900px) {
+  .clipboard-img {
+    bottom: -20px;
+    width: 180px;
+    right: -50px;
+  }
+}
+
+/* ✅ Responsive Adjustments */
+@media screen and (min-width: 1150px) {
+  .clipboard-img {
+    bottom: -20px;
+    width: 250px;
+    right: -130px;
+  }
+}
+/* ✅ Responsive Adjustments */
+@media screen and (min-width: 1250px) {
+  .clipboard-img {
+    bottom: -20px;
+    width: 320px;
+    right: -200px;
+  }
 }
 
 /* ✅ Keyframes for sliding in from the right */
@@ -129,28 +175,6 @@ html {
   to {
     opacity: 0.8;
     transform: translateX(0);
-  }
-}
-
-/* ✅ Responsive Adjustments */
-@media screen and (max-width: 1024px) {
-  .clipboard-img {
-    width: 350px;
-    right: -200px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .clipboard-img {
-    width: 280px;
-    right: -150px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .clipboard-img {
-    width: 200px;
-    right: -100px;
   }
 }
 
