@@ -1,13 +1,13 @@
 /* src/styles/Header.css */
 
-.body {
+#root {
+  overflow: hidden;
 }
 
 .app-header {
   text-align: center;
   width: min(100%, 1200px);
   margin: 0 auto;
-  margin-bottom: 20px;
 }
 
 /* ✅ Title Container */
@@ -17,6 +17,7 @@
   position: relative;
   text-align: left;
   align-items: center;
+  gap: 10px;
 }
 
 /* ✅ Main Title */
@@ -24,7 +25,7 @@
   font-size: 3rem;
   font-weight: bold;
   width: fit-content;
-  color: #fff;
+  color: rgb(220, 220, 220);
   position: relative;
   display: inline-block;
   margin: 0 0 16px 0;
@@ -37,7 +38,7 @@
   bottom: 0px; /* ✅ Slightly below main title */
   right: 0px; /* ✅ Aligned to the right of the main title */
   font-size: 0.8rem;
-  color: #9fa8da; /* ✅ Subtle blue-purple tone */
+  color: #fff200; /* ✅ Subtle blue-purple tone */
   font-weight: 500;
   letter-spacing: 1px;
   padding: 0;
@@ -56,7 +57,7 @@
   font-size: 1.5rem;
   font-weight: 400;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* ✅ Apply Google Font */
-  color: #7065e2; /* Subtle contrast */
+  color: #dcdcdc; /* Subtle contrast */
   margin: 0 0 32px 0;
   text-align: center;
 }
@@ -114,9 +115,11 @@
   padding: 32px;
   border-radius: 8px;
   position: relative;
-  width: 500px;
-  background-color: #1c1f37;
-  animation: fadeInBackground 0.2s ease-in-out;
+  width: min(100%, 500px);
+
+  background-color: rgba(28, 31, 55, 0.5); /* 🔹 Same color but 50% alpha */
+
+  /* ⛔ Remove this: opacity: 50%; */
 }
 
 .instructions p {
@@ -256,7 +259,8 @@
 .logo-wrapper {
   display: flex;
   justify-content: start;
-  margin-top: 16px;
+
+  padding: 16px;
   width: min(100%, 1200px);
 }
 /* ✅ Brand Text (Two-line next to logo) */

@@ -9,6 +9,8 @@
   color: white;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+  width: min(100%, 520px);
+  margin: 0;
 }
 
 .search-bar::placeholder {

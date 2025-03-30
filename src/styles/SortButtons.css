@@ -50,3 +50,17 @@
 .clear-button {
   margin-left: auto; /* ✅ Pushes it to the right */
 }
+
+.sort-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sort-label {
+  padding: 0;
+  color: rgb(220, 220, 220);
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}

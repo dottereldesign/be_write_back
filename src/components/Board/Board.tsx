@@ -92,15 +92,19 @@ const PasteContainer = () => {
       />
 
       {/* 🔹 Buttons Row */}
-      <div className="buttons-row">
-        <PasteButton onPaste={triggerPaste} /> {/* ✅ Paste Button */}
-        <SortButtons
-          onSortChange={handleSortChange}
-          sortType={sortType}
-          isAscending={isAscending}
-        />
-        <SearchBar onSearch={setSearchQuery} /> {/* ✅ Search Bar */}
-        <ClearButton onClear={() => handleClearAll()} />
+      <div className="buttons-container">
+        <div className="buttons-row">
+          <PasteButton onPaste={triggerPaste} />
+          <SortButtons
+            onSortChange={handleSortChange}
+            sortType={sortType}
+            isAscending={isAscending}
+          />
+          <ClearButton onClear={() => handleClearAll()} />
+        </div>
+        <div className="search-row">
+          <SearchBar onSearch={setSearchQuery} />
+        </div>
       </div>
 
       <div className="paste-container glassmorphism">
