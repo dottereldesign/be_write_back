@@ -3,15 +3,12 @@
 * {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   text-rendering: optimizeLegibility;
-}
-
-/* ✅ Apply best practices for body */
-/* ✅ Apply best practices for body */
-body,
-html {
-  height: 100vh; /* Use viewport height */
   margin: 0;
   padding: 0;
+}
+
+body,
+html {
   background-color: #141627;
   color: #ececec;
   display: flex;
@@ -28,6 +25,9 @@ html {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Full viewport height */
+  gap: 24px;
+  position: relative;
+  background-image: url("/src/assets/backdrop.jpg");
 }
 
 /* ✅ Footer stays at the bottom */
@@ -37,14 +37,4 @@ footer {
   text-align: center;
   margin: 0 auto;
   color: #ececec;
-}
-
-/* Then rotate everything else back */
-#root {
-  transform-origin: center center;
-  width: 100vw;
-  height: 100vh;
-  overflow-y: auto;
-  position: relative;
-  background-image: url("/src/assets/backdrop.jpg");
 }

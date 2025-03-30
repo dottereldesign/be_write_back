@@ -4,10 +4,10 @@ import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
 import PasteButton from "./PasteButton";
 import SearchBar from "./SearchBar"; // ✅ Import SearchBar
-import Toast from "./Toast";
+
 import Card from "./Card";
 import ClearButton from "./ClearButton";
-import { useToast } from "../../hooks/useToast";
+
 import { useSorting } from "../../hooks/useSorting";
 import { useClearPastes } from "../../hooks/useClearPastes";
 import { useClipboardPaste } from "../../hooks/useClipboardPaste";
@@ -17,8 +17,11 @@ import "../../styles/Board.css";
 import { PastedItem } from "../../types/PastedItem";
 
 const LOCAL_STORAGE_KEY = "pastedTexts";
+interface PasteContainerProps {
+  triggerToast: (message: string) => void;
+}
 
-const PasteContainer = () => {
+const PasteContainer = ({ triggerToast }: PasteContainerProps) => {
   console.log("📌 Rendering PasteContainer");
 
   const [pastedTexts, setItems] = useState<PastedItem[]>(() => {
@@ -35,7 +38,7 @@ const PasteContainer = () => {
   const { newPaste, setNewPaste, showModal, setShowModal, handleSaveName } =
     useSavePaste(setItems);
   const { copyToClipboard } = useClipboard();
-  const { toastMessage, triggerToast } = useToast();
+
   const { handlePaste } = useClipboardPaste(setNewPaste, setShowModal);
 
   useEffect(() => {
@@ -85,11 +88,6 @@ const PasteContainer = () => {
           onClose={() => setShowModal(false)}
         />
       )}
-      {/* Keep Toast always in the DOM */}
-      <Toast
-        message={toastMessage}
-        onClose={() => console.log("🚀 Toast closed")}
-      />
 
       {/* 🔹 Buttons Row */}
       <div className="buttons-container">

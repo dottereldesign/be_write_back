@@ -2,16 +2,15 @@
   display: grid;
   position: relative;
   gap: 8px;
-  background-color: #1c1f37 !important;
-  padding: 16px;
+  padding: 0 16px 16px 16px;
   border-radius: 16px;
-  opacity: 50%;
 }
 
 .paste-container-wrapper {
   display: flex;
   flex-direction: column;
-  width: min(100%, 1200px);
+  width: 100%;
+
   gap: 12px;
 
   margin: 0 auto;
@@ -31,7 +30,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* Ensures content starts from the top */
-  padding: 16px;
+
   background-color: rgba(28, 31, 55, 0.2); /* 🔹 Same color but 50% alpha */
   border-radius: 16px;
 }
@@ -73,7 +72,8 @@ main {
   justify-content: center;
   align-items: end;
   gap: 8px;
-  margin-bottom: 24px;
+
+  padding: 16px;
 }
 
 .search-row {

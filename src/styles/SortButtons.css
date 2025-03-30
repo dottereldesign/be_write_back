@@ -40,11 +40,6 @@
 }
 
 /* 🔹 Container for SortButtons & ClearButton */
-.buttons-row {
-  display: flex !important;
-  width: min(100%, 1200px); /* ✅ Limit width to 500px */
-  margin-bottom: 10px;
-}
 
 /* 🔹 Align Clear Button to the right */
 .clear-button {
