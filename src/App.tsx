@@ -10,7 +10,7 @@ function App() {
   const { toastMessage, triggerToast } = useToast();
 
   return (
-    <div id="root">
+    <>
       <Header />
       <Toast
         message={toastMessage}
@@ -20,7 +20,7 @@ function App() {
         <PasteContainer triggerToast={triggerToast} />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 

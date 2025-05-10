@@ -14,7 +14,7 @@
   background-color: #303030;
   color: #ececec;
   border: none;
-
+  justify-content: center;
   cursor: pointer;
   border-radius: 8px;
   display: flex;

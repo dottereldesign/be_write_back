@@ -38,7 +38,7 @@
   bottom: 0px; /* ✅ Slightly below main title */
   right: 0px; /* ✅ Aligned to the right of the main title */
   font-size: 0.8rem;
-  color: #fff200; /* ✅ Subtle blue-purple tone */
+  color: #ffd900; /* ✅ Subtle blue-purple tone */
   font-weight: 500;
   letter-spacing: 1px;
   padding: 0;
@@ -60,6 +60,8 @@
   color: #dcdcdc; /* Subtle contrast */
   margin: 0 0 32px 0;
   text-align: center;
+  font-weight: 600;
+  padding: 0 16px;
 }
 
 /* Accordion Toggle Button */

@@ -62,7 +62,7 @@ const Header = () => {
           <h1 className="app-title">bewriteback</h1>
           <span className="subtitle-jp">書いて戻ります</span>
         </div>
-        <p className="tagline">Quickly save and recall copied notes</p>
+        <p className="tagline">Quickly Save and Recall Copied Notes</p>
       </div>
 
       <button className="accordion-toggle" onClick={() => setIsOpen(!isOpen)}>
