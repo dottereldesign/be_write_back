@@ -1,0 +1,16 @@
+{
+  "name": "bewriteback",
+  "short_name": "bewriteback",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141627",
+  "theme_color": "#141627",
+  "description": "Quickly save and recall copied text. A fast and lightweight clipboard manager for developers, prompt engineers, and writers.",
+  "icons": [
+    {
+      "src": "/brb.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
