@@ -5,18 +5,18 @@
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/be_write_back/",
+  "start_url": "/be_write_back/",
   "icons": [
     {
-      "src": "/vite.svg",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png"
     },
     {
-      "src": "/vite.svg",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png"
     }
   ]
 }
