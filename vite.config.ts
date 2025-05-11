@@ -1,11 +1,12 @@
 // vite.config.ts
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import removeConsole from "vite-plugin-remove-console";
 import { VitePWA } from "vite-plugin-pwa";
 
-export default defineConfig({
-  base: "/be_write_back/", // ✅ Base URL for GitHub Pages
+export default defineConfig(({ command }) => ({
+  base: command === "serve" ? "/" : "/be_write_back/", // ✅ Smart base
 
   plugins: [
     react(),
@@ -13,7 +14,6 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "logo.webp", "vite.svg"],
-
       manifest: {
         name: "Be Write Back",
         short_name: "BRB",
@@ -24,44 +24,15 @@ export default defineConfig({
         scope: "/be_write_back/",
         start_url: "/be_write_back/",
         icons: [
-          {
-            src: "icon-192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "icon-512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
+          { src: "icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "icon-512.png", sizes: "512x512", type: "image/png" },
         ],
         screenshots: [
-          {
-            src: "screenshot.png",
-            sizes: "1280x720",
-            type: "image/png",
-          },
+          { src: "screenshot.png", sizes: "1280x720", type: "image/png" },
         ],
       },
-
       workbox: {
         globPatterns: ["**/*.{js,css,html,webp,png,svg,ico,json}"],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-stylesheets",
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-webfonts",
-            },
-          },
-        ],
       },
     }),
   ],
@@ -88,4 +59,4 @@ export default defineConfig({
   define: {
     "import.meta.env.PROD": JSON.stringify(true),
   },
-});
+}));
