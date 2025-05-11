@@ -1,19 +1,14 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Favicon -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="/be_write_back/brb.png"
-      sizes="32x32"
-    />
-    <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
+    <link rel="icon" href="/be_write_back/brb.png" type="image/png" />
     <link rel="manifest" href="/be_write_back/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
+
+    <title>bewriteback</title>
 
     <!-- Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,18 +23,13 @@
       onload="this.onload=null;this.removeAttribute('media');"
     />
 
-    <!-- Basic Meta -->
-    <meta
-      name="description"
-      content="Quickly save and recall copied text. A fast and lightweight clipboard manager for developers and writers."
-    />
+    <meta name="description" content="Quickly save and recall copied text." />
     <meta name="theme-color" content="#141627" />
 
-    <!-- Open Graph -->
     <meta property="og:title" content="bewriteback" />
     <meta
       property="og:description"
-      content="Quickly save and recall copied text. A fast and lightweight clipboard manager for developers and writers."
+      content="Clipboard Save and Paste Manager"
     />
     <meta
       property="og:image"
@@ -51,7 +41,6 @@
     />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="bewriteback" />
     <meta
@@ -62,12 +51,14 @@
       name="twitter:image"
       content="https://dottereldesign.github.io/be_write_back/brb.png"
     />
-
-    <title>bewriteback</title>
+    <script type="module" crossorigin src="/be_write_back/assets/index-B5Qt9EMX.js"></script>
   <link rel="manifest" href="/be_write_back/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/be_write_back/registerSW.js"></script></head>
 
   <body>
     <div id="root"></div>
-    <!-- ⚡ No <script src> needed, Vite injects built bundle -->
+
+    <!-- DEV MODE: manually import src/main.tsx -->
+
+    <!-- PROD MODE: vite will inject correct bundle script automatically -->
   </body>
 </html>
