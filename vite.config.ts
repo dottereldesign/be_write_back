@@ -2,18 +2,18 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import removeConsole from "vite-plugin-remove-console";
-import { VitePWA } from "vite-plugin-pwa"; // 🆕 Import PWA plugin
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  base: "/be_write_back/", // ✅ Base URL for GitHub Pages
+
   plugins: [
     react(),
-    removeConsole({
-      external: [],
-    }),
+    removeConsole({ external: [] }),
     VitePWA({
-      // 🆕 PWA settings
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "logo.webp", "vite.svg"],
+
       manifest: {
         name: "Be Write Back",
         short_name: "BRB",
@@ -21,8 +21,8 @@ export default defineConfig({
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
-        scope: "/be_write_back/", // ⚡ MATCH your base! Important
-        start_url: "/be_write_back/", // ⚡ MATCH your base!
+        scope: "/be_write_back/",
+        start_url: "/be_write_back/",
         icons: [
           {
             src: "icon-192.png",
@@ -35,7 +35,15 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+        screenshots: [
+          {
+            src: "screenshot.png",
+            sizes: "1280x720",
+            type: "image/png",
+          },
+        ],
       },
+
       workbox: {
         globPatterns: ["**/*.{js,css,html,webp,png,svg,ico,json}"],
         runtimeCaching: [
@@ -58,8 +66,6 @@ export default defineConfig({
     }),
   ],
 
-  base: "/be_write_back/",
-
   build: {
     target: "esnext",
     sourcemap: false,
@@ -67,9 +73,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
+          if (id.includes("node_modules")) return "vendor";
         },
       },
     },

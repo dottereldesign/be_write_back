@@ -6,23 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/brb.png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/brb.png" />
-    <link rel="manifest" href="/manifest.json" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/be_write_back/brb.png"
+      sizes="32x32"
+    />
+    <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
+    <link rel="manifest" href="/be_write_back/manifest.webmanifest" />
 
     <!-- Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.buymeacoffee.com" />
 
-    <!-- Preloads -->
-    <link
-      rel="preload"
-      as="image"
-      href="/assets/clipboard-img.webp"
-      type="image/webp"
-    />
-    <link rel="stylesheet" href="/src/styles/Header.css" />
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
       rel="stylesheet"
@@ -37,29 +35,39 @@
     />
     <meta name="theme-color" content="#141627" />
 
-    <!-- Open Graph (for social sharing) -->
+    <!-- Open Graph -->
     <meta property="og:title" content="bewriteback" />
     <meta
       property="og:description"
       content="Quickly save and recall copied text. A fast and lightweight clipboard manager for developers and writers."
     />
-    <meta property="og:image" content="/brb.png" />
-    <meta property="og:url" content="https://yourdomain.com" />
+    <meta
+      property="og:image"
+      content="https://dottereldesign.github.io/be_write_back/brb.png"
+    />
+    <meta
+      property="og:url"
+      content="https://dottereldesign.github.io/be_write_back/"
+    />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card (better previews on Twitter/X) -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="bewriteback" />
     <meta
       name="twitter:description"
       content="Quickly save and recall copied text."
     />
-    <meta name="twitter:image" content="/brb.png" />
+    <meta
+      name="twitter:image"
+      content="https://dottereldesign.github.io/be_write_back/brb.png"
+    />
 
     <title>bewriteback</title>
   </head>
+
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- ⚡ No <script src> needed, Vite injects built bundle -->
   </body>
 </html>
