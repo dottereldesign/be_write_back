@@ -1,6 +1,7 @@
 // src/components/Board/SearchBar.tsx
 import { useState, useEffect } from "react";
 import "../../styles/SearchBar.css";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -8,17 +9,14 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebouncedValue(inputValue, 300);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      onSearch(inputValue);
-    }, 300); // 🔥 300ms debounce delay
-
-    return () => clearTimeout(timeoutId); // 🔥 Cancel old timer if typing fast
-  }, [inputValue, onSearch]);
+    onSearch(debouncedValue.trim());
+  }, [debouncedValue, onSearch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value.trimStart(); // 🔥 Trim leading spaces
+    const newQuery = e.target.value;
     setInputValue(newQuery);
   };
 
@@ -29,6 +27,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
       placeholder="Search..."
       value={inputValue}
       onChange={handleInputChange}
+      aria-label="Search pastes"
     />
   );
 };

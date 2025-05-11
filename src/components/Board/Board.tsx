@@ -1,5 +1,5 @@
 // src/components/Board/Board.tsx
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
 import PasteButton from "./PasteButton";
@@ -11,35 +11,22 @@ import { useClearPastes } from "../../hooks/useClearPastes";
 import { useSavePaste } from "../../hooks/useSavePaste";
 import { useClipboard } from "../../hooks/useClipboard";
 import { useClipboardPaste } from "../../hooks/useClipboardPaste";
+import { loadPastes, savePastes } from "../../utils/storage";
 import { PastedItem } from "../../types/PastedItem";
 import "../../styles/Board.css";
-
-const LOCAL_STORAGE_KEY = "bewriteback_pastedTexts";
 
 interface ClipboardBoardProps {
   triggerToast: (message: string) => void;
 }
-
-// 🔥 Safe localStorage parser
-const safeParse = (value: string | null): PastedItem[] => {
-  if (!value) return [];
-  try {
-    return JSON.parse(value) as PastedItem[];
-  } catch {
-    if (import.meta.env.MODE !== "production") {
-      console.log("❌ Failed to parse stored pastes.");
-    }
-    return [];
-  }
-};
 
 const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   const [pastedTexts, setItems] = useState<PastedItem[]>(() => {
     if (import.meta.env.MODE !== "production") {
       console.log("🔄 Loading pastes from localStorage...");
     }
-    return safeParse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    return loadPastes();
   });
+
   const [searchQuery, setSearchQuery] = useState("");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
@@ -57,7 +44,7 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
       const updated = prev.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
       );
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+      savePastes(updated);
       return updated;
     });
   }, []);
@@ -73,18 +60,22 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
       }
       document.removeEventListener("paste", handleClipboardEventPaste);
     };
-  }, [handleClipboardEventPaste]);
+  }, [handleClipboardEventPaste]); // 🔥 Correct dependency
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(pastedTexts));
+    savePastes(pastedTexts);
   }, [pastedTexts]);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
-  const filteredItems = sortedItems
-    .filter((item) => item.displayName.toLowerCase().includes(normalizedQuery))
-    .filter((item) => (showFavoritesOnly ? item.isFavorite : true))
-    .sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+  const filteredItems = useMemo(() => {
+    return sortedItems
+      .filter((item) =>
+        item.displayName.toLowerCase().includes(normalizedQuery)
+      )
+      .filter((item) => (showFavoritesOnly ? item.isFavorite : true))
+      .sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+  }, [sortedItems, normalizedQuery, showFavoritesOnly]); // 🔥 Memoized
 
   return (
     <div className="paste-container-wrapper">
@@ -100,7 +91,6 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
       <div className="buttons-container">
         <div className="buttons-row">
           <PasteButton onPaste={triggerClipboardPaste} disabled={showModal} />
-
           <SortButtons
             onSortChange={handleSortChange}
             sortType={sortType}
@@ -109,6 +99,8 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
           <button
             className={`favorites-toggle ${showFavoritesOnly ? "active" : ""}`}
             onClick={() => setShowFavoritesOnly((prev) => !prev)}
+            aria-pressed={showFavoritesOnly}
+            aria-label="Toggle Favorites Filter"
           >
             {showFavoritesOnly ? "Show All" : "Show ⭐ Favorites"}
           </button>

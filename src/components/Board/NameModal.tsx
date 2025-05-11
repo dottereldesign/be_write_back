@@ -1,5 +1,5 @@
 // src/components/Board/NameModal.tsx
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import "../../styles/NameModal.css";
 import { useModalKeyboardShortcuts } from "../../hooks/useModalKeyboardShortcuts";
 
@@ -15,7 +15,11 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useModalKeyboardShortcuts({ onCancel: onClose });
+  useModalKeyboardShortcuts({
+    isOpen,
+    onCancel: onClose,
+    onConfirm: handleSave,
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -27,53 +31,37 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
   }, [isOpen, pastedText]);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Tab" && modalRef.current) {
-        const focusableElements =
-          modalRef.current.querySelectorAll<HTMLElement>(
-            'input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])'
-          );
-        if (!focusableElements.length) return;
+    if (!isOpen) return;
 
-        const first = focusableElements[0];
-        const last = focusableElements[focusableElements.length - 1];
-
-        if (!first || !last) return;
-
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        onClose();
       }
     };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [isOpen, onClose]);
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const handleSave = () => {
+  function handleSave() {
     if (name.trim()) {
       onSave(name.trim());
       onClose();
     }
-  };
+  }
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div
-        className="modal-content"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        ref={modalRef}
-      >
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div className="modal-content" ref={modalRef}>
         <h2 id="modal-title">Name your paste</h2>
         <input
           ref={inputRef}
@@ -81,12 +69,13 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
           placeholder="Enter a name..."
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") handleSave();
-            if (event.key === "Escape") onClose(); // Allow Esc inside input too ✅
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSave();
+            if (e.key === "Escape") onClose();
           }}
           autoComplete="off"
           spellCheck="false"
+          aria-label="Paste name input"
         />
         <div className="modal-buttons">
           <button onClick={handleSave}>Save (Enter)</button>
@@ -97,4 +86,4 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
   );
 };
 
-export default NameModal;
+export default memo(NameModal);

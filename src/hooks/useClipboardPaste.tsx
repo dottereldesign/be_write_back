@@ -8,8 +8,8 @@ export const useClipboardPaste = (
 ) => {
   const handleClipboardEventPaste = useCallback(
     (event: ClipboardEvent) => {
-      const pastedText = event.clipboardData?.getData("text");
-      if (pastedText?.trim()) {
+      const pastedText = event.clipboardData?.getData("text") || "";
+      if (pastedText.trim()) {
         setNewPaste(pastedText);
         setShowModal(true);
       }
