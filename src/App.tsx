@@ -14,7 +14,11 @@ function App() {
       <Header />
       <Toast
         message={toastMessage}
-        onClose={() => console.log("🚀 Toast closed")}
+        onClose={() => {
+          if (import.meta.env.MODE !== "production") {
+            console.log("🚀 Toast closed");
+          }
+        }}
       />
       <main>
         <PasteContainer triggerToast={triggerToast} />
