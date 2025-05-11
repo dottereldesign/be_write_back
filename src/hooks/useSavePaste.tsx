@@ -1,7 +1,8 @@
 // src/hooks/useSavePaste.ts
-// src/hooks/useSavePaste.ts
 import { useState } from "react";
-import { PastedItem } from "../types/PastedItem"; // ✅ Ensure correct import
+import { PastedItem } from "../types/PastedItem";
+import { generateId } from "../utils/generateId";
+import { formatTimestamp } from "../utils/formatTimestamp";
 
 export const useSavePaste = (
   setPastedTexts: React.Dispatch<React.SetStateAction<PastedItem[]>>
@@ -12,22 +13,14 @@ export const useSavePaste = (
   const handleSaveName = (name: string) => {
     if (!newPaste) return;
 
-    const nzDate = new Intl.DateTimeFormat("en-NZ", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(new Date());
+    const timestamp = formatTimestamp();
 
     const newEntry: PastedItem = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateId(),
       text: newPaste,
       displayName: name,
-      timestamp: nzDate,
-      manualOrder: Date.now(), // ✅ Ensuring a default order
+      timestamp,
+      manualOrder: Date.now(),
     };
 
     console.log("🟢 Adding new entry:", newEntry);

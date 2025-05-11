@@ -1,14 +1,25 @@
 // src/components/Board/SearchBar.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/SearchBar.css";
 
-const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
-  const [query, setQuery] = useState("");
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
+
+const SearchBar = ({ onSearch }: SearchBarProps) => {
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onSearch(inputValue);
+    }, 300); // 🔥 300ms debounce delay
+
+    return () => clearTimeout(timeoutId); // 🔥 Cancel old timer if typing fast
+  }, [inputValue, onSearch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
-    onSearch(newQuery); // Pass the query to Board.tsx
+    const newQuery = e.target.value.trimStart(); // 🔥 Trim leading spaces
+    setInputValue(newQuery);
   };
 
   return (
@@ -16,7 +27,7 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
       type="text"
       className="search-bar"
       placeholder="Search..."
-      value={query}
+      value={inputValue}
       onChange={handleInputChange}
     />
   );

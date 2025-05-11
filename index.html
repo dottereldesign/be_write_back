@@ -1,23 +1,28 @@
 <!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/brb.png" />
-    <link rel="stylesheet" href="/src/styles/Header.css" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://cdn.buymeacoffee.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/brb.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/brb.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.buymeacoffee.com" />
+
+    <!-- Preloads -->
     <link
       rel="preload"
       as="image"
       href="/assets/clipboard-img.webp"
       type="image/webp"
     />
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/src/styles/Header.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
       rel="stylesheet"
@@ -25,10 +30,31 @@
       onload="this.onload=null;this.removeAttribute('media');"
     />
 
+    <!-- Basic Meta -->
     <meta
       name="description"
       content="Quickly save and recall copied text. A fast and lightweight clipboard manager for developers and writers."
     />
+    <meta name="theme-color" content="#141627" />
+
+    <!-- Open Graph (for social sharing) -->
+    <meta property="og:title" content="bewriteback" />
+    <meta
+      property="og:description"
+      content="Quickly save and recall copied text. A fast and lightweight clipboard manager for developers and writers."
+    />
+    <meta property="og:image" content="/brb.png" />
+    <meta property="og:url" content="https://yourdomain.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card (better previews on Twitter/X) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="bewriteback" />
+    <meta
+      name="twitter:description"
+      content="Quickly save and recall copied text."
+    />
+    <meta name="twitter:image" content="/brb.png" />
 
     <title>bewriteback</title>
   </head>

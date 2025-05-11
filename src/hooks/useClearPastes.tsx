@@ -1,15 +1,19 @@
 // src/hooks/useClearPastes.ts
 import { PastedItem } from "../types/PastedItem";
 
-const LOCAL_STORAGE_KEY = "pastedTexts"; // ✅ Same key as in Board.tsx
+const LOCAL_STORAGE_KEY = "bewriteback_pastedTexts";
 
 export const useClearPastes = (
-  setPastedTexts: React.Dispatch<React.SetStateAction<PastedItem[]>>
+  setPastedTexts: React.Dispatch<React.SetStateAction<PastedItem[]>>,
+  setShowFavoritesOnly: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const handleClearAll = () => {
-    setPastedTexts([]); // ✅ Clear UI state
-    localStorage.removeItem(LOCAL_STORAGE_KEY); // ✅ Also clear localStorage
-    console.log("🗑 Cleared all pasted texts.");
+    setPastedTexts([]);
+    setShowFavoritesOnly(false); // Reset favorite filter too
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    if (import.meta.env.MODE !== "production") {
+      console.log("❌ Failed to parse stored pastes.");
+    }
   };
 
   return { handleClearAll };

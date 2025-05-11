@@ -1,20 +1,26 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import removeConsole from "vite-plugin-remove-console"; // 🔥 Import plugin
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    removeConsole({
+      external: [], // ✅ Optional: If you want to exclude certain files from stripping
+    }),
+  ],
 
-  base: "/be_write_back/", // ✅ Ensure correct GitHub Pages deployment path
+  base: "/be_write_back/",
 
   build: {
-    target: "esnext", // ✅ Use latest JavaScript for smaller bundle
-    sourcemap: false, // ✅ Disable source maps for production
-    cssCodeSplit: true, // ✅ Split CSS for better caching
+    target: "esnext",
+    sourcemap: false,
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            return "vendor"; // ✅ Creates a separate chunk for vendor libraries
+            return "vendor";
           }
         },
       },
@@ -23,11 +29,11 @@ export default defineConfig({
 
   server: {
     headers: {
-      "Cache-Control": "public, max-age=31536000, immutable", // ✅ Enable long-term caching
+      "Cache-Control": "public, max-age=31536000, immutable",
     },
   },
 
   define: {
-    "import.meta.env.PROD": JSON.stringify(true), // ✅ Ensure production optimizations
+    "import.meta.env.PROD": JSON.stringify(true),
   },
 });
