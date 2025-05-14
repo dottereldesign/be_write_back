@@ -4,33 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" href="/brb.png" type="image/png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/brb.png" />
+    <link rel="icon" href="/be_write_back/brb.png" type="image/png" />
+    <link rel="manifest" href="/be_write_back/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
 
     <title>bewriteback</title>
 
-    <!-- Preconnects -->
+    <!-- Fonts and Meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.buymeacoffee.com" />
-
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.onload=null;this.removeAttribute('media');"
-    />
-
-    <meta name="description" content="Quickly save and recall copied text." />
+    <meta name="description" content="Clipboard Manager" />
     <meta name="theme-color" content="#141627" />
 
-    <meta property="og:title" content="bewriteback" />
-    <meta
-      property="og:description"
-      content="Clipboard Save and Paste Manager"
-    />
+    <!-- Social Previews -->
     <meta
       property="og:image"
       content="https://dottereldesign.github.io/be_write_back/brb.png"
@@ -38,14 +24,6 @@
     <meta
       property="og:url"
       content="https://dottereldesign.github.io/be_write_back/"
-    />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="bewriteback" />
-    <meta
-      name="twitter:description"
-      content="Quickly save and recall copied text."
     />
     <meta
       name="twitter:image"
@@ -56,13 +34,13 @@
   <body>
     <div id="root"></div>
 
-    <!-- DEV MODE: manually import src/main.tsx -->
+    <!-- DEV: only import manually -->
     <script type="module">
       if (import.meta.env.DEV) {
         import("/src/main.tsx");
       }
     </script>
 
-    <!-- PROD MODE: vite will inject correct bundle script automatically -->
+    <!-- PROD: Vite auto injects built script (don't touch) -->
   </body>
 </html>
