@@ -1,4 +1,5 @@
 {
+  "id": "/be_write_back/",
   "name": "Be Write Back",
   "short_name": "BRB",
   "description": "Clipboard Save and Paste Manager",
