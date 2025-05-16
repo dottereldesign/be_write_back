@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/be_write_back/sw.js', { scope: '/be_write_back/' })})}
