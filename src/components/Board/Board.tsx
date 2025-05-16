@@ -35,11 +35,13 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   const { handleClearAll } = useClearPastes(setItems, setShowFavoritesOnly);
   const { newPaste, setNewPaste, showModal, setShowModal, handleSaveName } =
     useSavePaste(setItems);
-  const { copyToClipboard } = useClipboard();
+
+  // ✅ THIS is the new correct usage!
+  const { copyToClipboard } = useClipboard(triggerToast);
+
   const { triggerClipboardPaste, handleClipboardEventPaste } =
     useClipboardPaste(setNewPaste, setShowModal, triggerToast);
 
-  // Only call if id is string (guaranteed by type)
   const toggleFavorite = useCallback((id: string) => {
     setItems((prev) => {
       const updated = prev.map((item) =>
@@ -51,7 +53,6 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   }, []);
 
   useEffect(() => {
-    // Only one event listener, cleaned up properly.
     document.addEventListener("paste", handleClipboardEventPaste);
     return () => {
       document.removeEventListener("paste", handleClipboardEventPaste);
@@ -121,24 +122,14 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
               : "No saved pastes yet. Try pasting something!"}
           </div>
         ) : (
-          filteredItems.map((item) => {
-            const truncatedName =
-              item.displayName.length > 10
-                ? `${item.displayName.substring(0, 10)}...`
-                : item.displayName;
-
-            return (
-              <Card
-                key={item.id}
-                item={item}
-                copyToClipboard={(text) => {
-                  copyToClipboard(text, item.displayName);
-                  triggerToast(`Copied ${truncatedName} to clipboard!`);
-                }}
-                onToggleFavorite={toggleFavorite}
-              />
-            );
-          })
+          filteredItems.map((item) => (
+            <Card
+              key={item.id}
+              item={item}
+              copyToClipboard={copyToClipboard}
+              onToggleFavorite={toggleFavorite}
+            />
+          ))
         )}
       </div>
     </div>

@@ -5,5 +5,5 @@ export interface PastedItem {
   displayName: string;
   timestamp: string; // Human display string
   createdAt: string; // ISO string for sorting!
-  isFavorite?: boolean;
+  isFavorite: boolean; // now required
 }

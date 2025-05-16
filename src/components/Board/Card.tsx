@@ -22,15 +22,24 @@ const Card = ({ item, copyToClipboard, onToggleFavorite }: CardProps) => {
   }
 
   const handleCopy = (
-    event: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+    event?:
+      | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
+      | React.KeyboardEvent<HTMLDivElement>
   ) => {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     copyToClipboard(item.text, item.displayName);
   };
 
   const handleFavoriteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onToggleFavorite(item.id);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleCopy(event);
+    }
   };
 
   return (
@@ -40,6 +49,7 @@ const Card = ({ item, copyToClipboard, onToggleFavorite }: CardProps) => {
       tabIndex={0}
       aria-label={`Copy '${item.displayName}' to clipboard`}
       role="button"
+      onKeyDown={handleKeyDown}
     >
       <div className="timestamp" aria-label={`Pasted at ${item.timestamp}`}>
         {item.timestamp}

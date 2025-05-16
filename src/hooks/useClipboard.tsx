@@ -1,9 +1,5 @@
 // src/hooks/useClipboard.ts
-import { useToast } from "./useToast";
-
-export function useClipboard() {
-  const { triggerToast } = useToast();
-
+export function useClipboard(triggerToast: (message: string) => void) {
   const copyToClipboard = (text: string, displayName: string) => {
     if (
       !navigator.clipboard ||

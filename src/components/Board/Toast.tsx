@@ -9,25 +9,37 @@ interface ToastProps {
   onClose?: () => void;
 }
 
+const FADE_DURATION = 500;
+
 const Toast = ({ message, onClose }: ToastProps) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (message) {
-      console.log("🟢 Showing toast with message:", message);
-      setVisible(true);
+    if (message) setVisible(true);
+    else if (visible) setVisible(false);
+    // eslint-disable-next-line
+  }, [message]);
 
-      const fadeOutTimer = setTimeout(() => {
-        console.log("🟠 Hiding toast");
-        setVisible(false);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (!visible && message) {
+      timer = setTimeout(() => {
         if (onClose) onClose();
-      }, 2000);
-
-      return () => {
-        clearTimeout(fadeOutTimer);
-      };
+      }, FADE_DURATION);
     }
-  }, [message, onClose]);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [visible, message, onClose]);
+
+  const handleManualClose = () => {
+    setVisible(false);
+    setTimeout(() => {
+      if (onClose) onClose();
+    }, FADE_DURATION);
+  };
+
+  if (!message && !visible) return null;
 
   return (
     <div className={`toast ${visible ? "show" : "hide"}`}>
@@ -37,11 +49,8 @@ const Toast = ({ message, onClose }: ToastProps) => {
       <span className="toast-message">{message}</span>
       <button
         className="toast-close"
-        onClick={() => {
-          console.log("❌ Manually closing toast");
-          setVisible(false);
-          if (onClose) onClose();
-        }}
+        onClick={handleManualClose}
+        aria-label="Close notification"
       >
         <FontAwesomeIcon icon={faTimes} />
       </button>

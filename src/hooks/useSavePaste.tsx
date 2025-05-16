@@ -17,8 +17,9 @@ export const useSavePaste = (
       id: generateId(),
       text: newPaste,
       displayName: name,
-      timestamp: formatTimestamp(now), // for display
-      createdAt: now.toISOString(), // for sorting
+      timestamp: formatTimestamp(now),
+      createdAt: now.toISOString(),
+      isFavorite: false, // Always default false!
     };
     setPastedTexts((prev) => [...prev, newEntry]);
     setNewPaste(null);
