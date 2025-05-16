@@ -13,7 +13,6 @@ interface SortButtonsProps {
   isAscending: boolean;
   sortType: "displayName" | "timestamp";
 }
-
 const SortButtons = ({
   onSortChange,
   isAscending,
@@ -21,26 +20,50 @@ const SortButtons = ({
 }: SortButtonsProps) => {
   return (
     <div className="sort-buttons-container">
-      {" "}
-      {/* ✅ Added a wrapper */}
-      <span className="sort-label">Sort</span>{" "}
-      {/* ✅ Sort label above buttons */}
+      <span className="sort-label">Sort</span>
       <div className="sort-buttons">
-        <button onClick={() => onSortChange("displayName")}>
+        <button
+          className={sortType === "displayName" ? "active" : ""}
+          onClick={() => onSortChange("displayName")}
+          aria-pressed={sortType === "displayName"}
+          aria-label={
+            sortType === "displayName"
+              ? isAscending
+                ? "Sort by name, ascending"
+                : "Sort by name, descending"
+              : "Sort by name"
+          }
+          type="button"
+        >
           <FontAwesomeIcon
             icon={
-              sortType === "displayName" && isAscending
-                ? faSortAlphaUp
+              sortType === "displayName"
+                ? isAscending
+                  ? faSortAlphaUp
+                  : faSortAlphaDown
                 : faSortAlphaDown
             }
           />
         </button>
-
-        <button onClick={() => onSortChange("timestamp")}>
+        <button
+          className={sortType === "timestamp" ? "active" : ""}
+          onClick={() => onSortChange("timestamp")}
+          aria-pressed={sortType === "timestamp"}
+          aria-label={
+            sortType === "timestamp"
+              ? isAscending
+                ? "Sort by time, ascending"
+                : "Sort by time, descending"
+              : "Sort by time"
+          }
+          type="button"
+        >
           <FontAwesomeIcon
             icon={
-              sortType === "timestamp" && isAscending
-                ? faSortNumericUp
+              sortType === "timestamp"
+                ? isAscending
+                  ? faSortNumericUp
+                  : faSortNumericDown
                 : faSortNumericDown
             }
           />
@@ -49,5 +72,4 @@ const SortButtons = ({
     </div>
   );
 };
-
 export default SortButtons;

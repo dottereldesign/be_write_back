@@ -6,6 +6,7 @@ export const useClipboardPaste = (
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   triggerToast: (message: string) => void
 ) => {
+  // Stable handler (safe for event listener)
   const handleClipboardEventPaste = useCallback(
     (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData("text") || "";
@@ -18,11 +19,13 @@ export const useClipboardPaste = (
   );
 
   const triggerClipboardPaste = useCallback(() => {
-    if (!navigator.clipboard) {
-      triggerToast("Clipboard API requires secure HTTPS context.");
+    if (
+      !navigator.clipboard ||
+      typeof navigator.clipboard.readText !== "function"
+    ) {
+      triggerToast("Clipboard API requires HTTPS and a supported browser.");
       return;
     }
-
     navigator.clipboard
       .readText()
       .then((text) => {
@@ -35,7 +38,7 @@ export const useClipboardPaste = (
       })
       .catch((error) => {
         console.error("❌ Clipboard read error:", error);
-        triggerToast("Clipboard access denied or insecure context.");
+        triggerToast("Clipboard access denied or unsupported browser/context.");
       });
   }, [setNewPaste, setShowModal, triggerToast]);
 

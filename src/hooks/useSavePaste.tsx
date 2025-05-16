@@ -12,19 +12,14 @@ export const useSavePaste = (
 
   const handleSaveName = (name: string) => {
     if (!newPaste) return;
-
-    const timestamp = formatTimestamp();
-
+    const now = new Date();
     const newEntry: PastedItem = {
       id: generateId(),
       text: newPaste,
       displayName: name,
-      timestamp,
-      manualOrder: Date.now(),
+      timestamp: formatTimestamp(now), // for display
+      createdAt: now.toISOString(), // for sorting
     };
-
-    console.log("🟢 Adding new entry:", newEntry);
-
     setPastedTexts((prev) => [...prev, newEntry]);
     setNewPaste(null);
     setShowModal(false);

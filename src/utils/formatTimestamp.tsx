@@ -1,5 +1,6 @@
 // src/utils/formatTimestamp.tsx
-export function formatTimestamp(): string {
+
+export function formatTimestamp(date: Date = new Date()): string {
   return new Intl.DateTimeFormat("en-NZ", {
     hour: "2-digit",
     minute: "2-digit",
@@ -8,5 +9,5 @@ export function formatTimestamp(): string {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  }).format(new Date());
+  }).format(date);
 }

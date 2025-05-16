@@ -1,10 +1,9 @@
 // src/types/PastedItem.ts
-
 export interface PastedItem {
-  id: string | number;
+  id: string;
   text: string;
   displayName: string;
-  timestamp: string;
-  manualOrder?: number;
-  isFavorite?: boolean; // ⭐ NEW: optional favorite status
+  timestamp: string; // Human display string
+  createdAt: string; // ISO string for sorting!
+  isFavorite?: boolean;
 }

@@ -16,7 +16,6 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
 
   useEffect(() => {
     if (!isOpen) return;
-
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         modalRef.current &&
@@ -43,10 +42,20 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
           Are you sure you want to delete all saved pastes?
         </p>
         <div className="modal-buttons">
-          <button className="confirm-btn" onClick={onConfirm}>
+          <button
+            className="confirm-btn"
+            onClick={onConfirm}
+            aria-label="Confirm delete all pastes"
+            type="button"
+          >
             Yes, Clear All
           </button>
-          <button className="cancel-btn" onClick={onCancel}>
+          <button
+            className="cancel-btn"
+            onClick={onCancel}
+            aria-label="Cancel delete"
+            type="button"
+          >
             No, Keep Them
           </button>
         </div>

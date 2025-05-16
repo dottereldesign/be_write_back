@@ -1,5 +1,5 @@
 // src/components/Board/Board.tsx
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
 import PasteButton from "./PasteButton";
@@ -27,8 +27,8 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
     return loadPastes();
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
 
   const { sortedItems, handleSortChange, sortType, isAscending } =
     useSorting(pastedTexts);
@@ -39,7 +39,8 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   const { triggerClipboardPaste, handleClipboardEventPaste } =
     useClipboardPaste(setNewPaste, setShowModal, triggerToast);
 
-  const toggleFavorite = useCallback((id: string | number) => {
+  // Only call if id is string (guaranteed by type)
+  const toggleFavorite = useCallback((id: string) => {
     setItems((prev) => {
       const updated = prev.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
@@ -50,32 +51,23 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   }, []);
 
   useEffect(() => {
-    if (import.meta.env.MODE !== "production") {
-      console.log("📋 Adding clipboard paste event listener");
-    }
+    // Only one event listener, cleaned up properly.
     document.addEventListener("paste", handleClipboardEventPaste);
     return () => {
-      if (import.meta.env.MODE !== "production") {
-        console.log("❌ Removing clipboard paste event listener");
-      }
       document.removeEventListener("paste", handleClipboardEventPaste);
     };
-  }, [handleClipboardEventPaste]); // 🔥 Correct dependency
+  }, [handleClipboardEventPaste]);
 
   useEffect(() => {
     savePastes(pastedTexts);
   }, [pastedTexts]);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
-
-  const filteredItems = useMemo(() => {
-    return sortedItems
-      .filter((item) =>
-        item.displayName.toLowerCase().includes(normalizedQuery)
-      )
-      .filter((item) => (showFavoritesOnly ? item.isFavorite : true))
-      .sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
-  }, [sortedItems, normalizedQuery, showFavoritesOnly]); // 🔥 Memoized
+  const filteredItems = sortedItems.filter(
+    (item) =>
+      item.displayName.toLowerCase().includes(normalizedQuery) &&
+      (!showFavoritesOnly || item.isFavorite)
+  );
 
   return (
     <div className="paste-container-wrapper">
@@ -100,13 +92,22 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
             className={`favorites-toggle ${showFavoritesOnly ? "active" : ""}`}
             onClick={() => setShowFavoritesOnly((prev) => !prev)}
             aria-pressed={showFavoritesOnly}
-            aria-label="Toggle Favorites Filter"
+            aria-label={
+              showFavoritesOnly
+                ? "Show all pastes, including non-favorites"
+                : "Show only favorites"
+            }
+            title={
+              showFavoritesOnly
+                ? "Show all pastes, including non-favorites"
+                : "Show only starred favorites"
+            }
+            type="button"
           >
             {showFavoritesOnly ? "Show All" : "Show ⭐ Favorites"}
           </button>
           <ClearButton onClear={handleClearAll} />
         </div>
-
         <div className="search-row">
           <SearchBar onSearch={setSearchQuery} />
         </div>
@@ -114,7 +115,7 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
 
       <div className="paste-container glassmorphism">
         {filteredItems.length === 0 ? (
-          <div className="empty-state">
+          <div className="empty-state" role="status" aria-live="polite">
             {searchQuery
               ? "No matching results found."
               : "No saved pastes yet. Try pasting something!"}

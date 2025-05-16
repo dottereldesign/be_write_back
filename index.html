@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="icon" href="/be_write_back/brb.png" type="image/png" />
-    <link rel="manifest" href="/be_write_back/manifest.webmanifest" />
+
     <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
 
     <title>bewriteback</title>
@@ -35,16 +35,6 @@
 
   <body>
     <div id="root"></div>
-
-    <!-- DEV ONLY: Only run this locally -->
-    <script type="module">
-      // Only try import if Vite dev server is running (localhost:5173)
-      if (
-        location.hostname === "localhost" ||
-        location.hostname === "127.0.0.1"
-      ) {
-        import("/src/main.tsx");
-      }
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

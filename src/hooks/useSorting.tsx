@@ -1,31 +1,39 @@
 // src/hooks/useSorting.ts
 import { useMemo, useState } from "react";
-import { PastedItem } from "../types/PastedItem"; // ✅ Ensure correct import
+import { PastedItem } from "../types/PastedItem";
 
 export function useSorting(items: PastedItem[]) {
   const [sortType, setSortType] = useState<"displayName" | "timestamp">(
     "displayName"
   );
-
   const [isAscending, setIsAscending] = useState<boolean>(true);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a, b) => {
-      if (sortType === "timestamp") {
-        return isAscending
-          ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-          : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-      }
+    const favSort = (a: PastedItem, b: PastedItem) =>
+      (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0);
 
+    const compare = (a: PastedItem, b: PastedItem) => {
+      if (sortType === "timestamp") {
+        // Use createdAt ISO for sorting
+        return isAscending
+          ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
       return isAscending
         ? a.displayName.localeCompare(b.displayName)
         : b.displayName.localeCompare(a.displayName);
+    };
+
+    return [...items].sort((a, b) => {
+      const favOrder = favSort(a, b);
+      if (favOrder !== 0) return favOrder;
+      return compare(a, b);
     });
   }, [items, sortType, isAscending]);
 
   const handleSortChange = (type: "displayName" | "timestamp") => {
     if (sortType === type) {
-      setIsAscending(!isAscending);
+      setIsAscending((asc) => !asc);
     } else {
       setSortType(type);
       setIsAscending(true);
