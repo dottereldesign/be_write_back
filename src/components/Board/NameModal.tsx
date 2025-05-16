@@ -1,4 +1,5 @@
 // src/components/Board/NameModal.tsx
+// src/components/Board/NameModal.tsx
 import { useState, useEffect, useRef, memo } from "react";
 import "../../styles/NameModal.css";
 import { useModalKeyboardShortcuts } from "../../hooks/useModalKeyboardShortcuts";
@@ -7,10 +8,17 @@ interface NameModalProps {
   onSave: (name: string) => void;
   onClose: () => void;
   isOpen: boolean;
-  pastedText: string | null;
+  pastedText?: string | null;
+  label?: string; // New: allows reuse for folders
 }
 
-const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
+const NameModal = ({
+  onSave,
+  onClose,
+  isOpen,
+  pastedText,
+  label,
+}: NameModalProps) => {
   const [name, setName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -32,7 +40,6 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
 
   useEffect(() => {
     if (!isOpen) return;
-
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         modalRef.current &&
@@ -62,7 +69,7 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
       aria-labelledby="modal-title"
     >
       <div className="modal-content" ref={modalRef}>
-        <h2 id="modal-title">Name your paste</h2>
+        <h2 id="modal-title">{label || "Name your paste"}</h2>
         <input
           ref={inputRef}
           type="text"
@@ -75,7 +82,7 @@ const NameModal = ({ onSave, onClose, isOpen, pastedText }: NameModalProps) => {
           }}
           autoComplete="off"
           spellCheck="false"
-          aria-label="Paste name input"
+          aria-label="Name input"
         />
         <div className="modal-buttons">
           <button onClick={handleSave}>Save (Enter)</button>

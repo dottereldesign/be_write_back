@@ -1,11 +1,12 @@
 // src/hooks/useSavePaste.ts
 import { useState } from "react";
-import { PastedItem } from "../types/PastedItem";
+import { PastedItem, BoardItem } from "../types/PastedItem";
 import { generateId } from "../utils/generateId";
 import { formatTimestamp } from "../utils/formatTimestamp";
 
+// Accepts the BoardItem[] setter, not PastedItem[]
 export const useSavePaste = (
-  setPastedTexts: React.Dispatch<React.SetStateAction<PastedItem[]>>
+  setBoardItems: React.Dispatch<React.SetStateAction<BoardItem[]>>
 ) => {
   const [newPaste, setNewPaste] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -15,13 +16,14 @@ export const useSavePaste = (
     const now = new Date();
     const newEntry: PastedItem = {
       id: generateId(),
+      type: "card", // required for new structure
       text: newPaste,
       displayName: name,
       timestamp: formatTimestamp(now),
       createdAt: now.toISOString(),
-      isFavorite: false, // Always default false!
+      isFavorite: false,
     };
-    setPastedTexts((prev) => [...prev, newEntry]);
+    setBoardItems((prev) => [...prev, newEntry]);
     setNewPaste(null);
     setShowModal(false);
   };

@@ -1,17 +1,19 @@
 // src/hooks/useClearPastes.ts
-import { PastedItem } from "../types/PastedItem";
-import { LOCAL_STORAGE_KEY } from "../constants/storage";
+// src/hooks/useClearPastes.ts
+import { BoardItem } from "../types/PastedItem";
 
 export const useClearPastes = (
-  setPastedTexts: React.Dispatch<React.SetStateAction<PastedItem[]>>,
+  setBoardItems: React.Dispatch<React.SetStateAction<BoardItem[]>>,
   setShowFavoritesOnly: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const handleClearAll = () => {
-    setPastedTexts([]);
-    setShowFavoritesOnly(false); // Reset favorite filter too
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    if (import.meta.env.MODE !== "production") {
-      console.log("✅ Cleared all saved pastes.");
+    if (
+      window.confirm(
+        "Are you sure you want to clear all pastes and folders? This cannot be undone."
+      )
+    ) {
+      setBoardItems([]);
+      setShowFavoritesOnly(false);
     }
   };
 

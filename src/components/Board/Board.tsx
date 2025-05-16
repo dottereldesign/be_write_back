@@ -7,13 +7,15 @@ import PasteButton from "./PasteButton";
 import SearchBar from "./SearchBar";
 import Card from "./Card";
 import ClearButton from "./ClearButton";
+import FolderComponent from "./Folder";
+import FolderBoard from "./FolderBoard";
 import { useSorting } from "../../hooks/useSorting";
 import { useClearPastes } from "../../hooks/useClearPastes";
 import { useSavePaste } from "../../hooks/useSavePaste";
 import { useClipboard } from "../../hooks/useClipboard";
 import { useClipboardPaste } from "../../hooks/useClipboardPaste";
-import { loadPastes, savePastes } from "../../utils/storage";
-import { PastedItem } from "../../types/PastedItem";
+import { loadBoardItems, saveBoardItems } from "../../utils/storage";
+import { BoardItem, PastedItem, Folder, isCard } from "../../types/PastedItem";
 import "../../styles/Board.css";
 
 // DnD-kit
@@ -38,39 +40,43 @@ interface ClipboardBoardProps {
 }
 
 const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
-  const [pastedTexts, setPastedTexts] = useState<PastedItem[]>(() => {
+  const [boardItems, setBoardItems] = useState<BoardItem[]>(() => {
     if (import.meta.env.MODE !== "production") {
-      console.log("🔄 Loading pastes from localStorage...");
+      console.log("🔄 Loading board items from localStorage...");
     }
-    return loadPastes();
+    return loadBoardItems();
   });
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [activeFolderId, setActiveFolderId] = useState<string | null>(null);
 
-  // useSorting returns the sorted *view*, not the real order in pastedTexts
+  const cards = boardItems.filter(isCard) as PastedItem[];
+  const folders = boardItems.filter((item): item is Folder => !isCard(item));
+
   const { sortedItems, handleSortChange, sortType, isAscending } =
-    useSorting(pastedTexts);
+    useSorting(cards);
 
   const { handleClearAll } = useClearPastes(
-    setPastedTexts,
+    setBoardItems,
     setShowFavoritesOnly
   );
   const { newPaste, setNewPaste, showModal, setShowModal, handleSaveName } =
-    useSavePaste(setPastedTexts);
+    useSavePaste(setBoardItems);
 
   const { copyToClipboard } = useClipboard(triggerToast);
   const { triggerClipboardPaste, handleClipboardEventPaste } =
     useClipboardPaste(setNewPaste, setShowModal, triggerToast);
 
   const toggleFavorite = useCallback((id: string) => {
-    setPastedTexts((prev) => {
-      const updated = prev.map((item) =>
-        item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
-      );
-      savePastes(updated);
-      return updated;
-    });
+    setBoardItems((prev) =>
+      prev.map((item) =>
+        isCard(item) && item.id === id
+          ? { ...item, isFavorite: !item.isFavorite }
+          : item
+      )
+    );
   }, []);
 
   useEffect(() => {
@@ -81,11 +87,10 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   }, [handleClipboardEventPaste]);
 
   useEffect(() => {
-    savePastes(pastedTexts);
-  }, [pastedTexts]);
+    saveBoardItems(boardItems);
+  }, [boardItems]);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  // This filter/sort is only for displaying results.
   const filteredItems = sortedItems.filter(
     (item) =>
       item.displayName.toLowerCase().includes(normalizedQuery) &&
@@ -103,30 +108,123 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
     normalizedQuery === "" && !showFavoritesOnly && sortType === "custom";
 
   function handleDragEnd(event: DragEndEvent) {
-    if (!canDragAndDrop) return; // block dnd in non-custom
+    if (!canDragAndDrop) return;
     const { active, over } = event;
-    console.log("DragEnd event", { active, over });
     if (!over || active.id === over.id) return;
 
-    // These indexes are relative to pastedTexts, not the filtered/sorted view!
-    const oldIndex = pastedTexts.findIndex((item) => item.id === active.id);
-    const newIndex = pastedTexts.findIndex((item) => item.id === over.id);
+    // Is it a folder drop?
+    const targetFolder = folders.find((f) => f.id === over.id);
 
-    console.log("Old index in pastedTexts:", oldIndex, "New index:", newIndex);
-    if (oldIndex === -1 || newIndex === -1) return;
+    if (targetFolder) {
+      // Move card into folder
+      setBoardItems((prev) => {
+        // Remove card from board
+        const cardIdx = prev.findIndex((i) => isCard(i) && i.id === active.id);
+        if (cardIdx === -1) return prev; // Not found
+        const card = prev[cardIdx] as PastedItem;
+        // Remove from top-level items
+        const newItems = prev.filter((i) => !(isCard(i) && i.id === active.id));
+        // Add card to the target folder's items
+        return newItems.map((item) =>
+          !isCard(item) && item.id === targetFolder.id
+            ? { ...item, items: [card, ...item.items] }
+            : item
+        );
+      });
+      return;
+    }
 
-    const newArr = arrayMove(pastedTexts, oldIndex, newIndex);
-    console.log(
-      "New order after move:",
-      newArr.map((i) => i.displayName)
-    );
-    setPastedTexts(newArr);
-    // savePastes called by useEffect
+    // Otherwise, normal reorder as before
+    const activeIdx = cards.findIndex((item) => item.id === active.id);
+    const overIdx = cards.findIndex((item) => item.id === over.id);
+    if (activeIdx === -1 || overIdx === -1) return;
+
+    const reorderedCards = arrayMove(cards, activeIdx, overIdx);
+    const next: BoardItem[] = [];
+    let cardI = 0;
+    for (const item of boardItems) {
+      if (isCard(item)) next.push(reorderedCards[cardI++]);
+      else next.push(item);
+    }
+    setBoardItems(next);
   }
 
-  console.log("RENDER: pastedTexts", pastedTexts);
-  console.log("RENDER: sortedItems", sortedItems);
-  console.log("RENDER: filteredItems", filteredItems);
+  // Helper: Get the active folder object (if one is open)
+  const activeFolder =
+    activeFolderId && folders.length
+      ? folders.find((f) => f.id === activeFolderId) || null
+      : null;
+
+  // Handler: Move card out of a folder back to board
+  function handleMoveCardOut(card: PastedItem) {
+    if (!activeFolder) return;
+    setBoardItems((prev) => {
+      // Remove card from folder
+      const newItems = prev.map((item) => {
+        if (
+          "type" in item &&
+          item.type === "folder" &&
+          item.id === activeFolder.id
+        ) {
+          return { ...item, items: item.items.filter((i) => i.id !== card.id) };
+        }
+        return item;
+      });
+      // Insert card back at the top level (at the start)
+      return [{ ...card }, ...newItems];
+    });
+  }
+
+  // Handler: Move/reorder cards within a folder
+  function handleMoveCardWithin(newItems: PastedItem[]) {
+    if (!activeFolder) return;
+    setBoardItems((prev) =>
+      prev.map((item) =>
+        "type" in item && item.type === "folder" && item.id === activeFolder.id
+          ? { ...item, items: newItems }
+          : item
+      )
+    );
+  }
+
+  function handleToggleFavoriteInFolder(id: string) {
+    if (!activeFolder) return;
+    setBoardItems((prev) =>
+      prev.map((item) => {
+        if (
+          "type" in item &&
+          item.type === "folder" &&
+          item.id === activeFolder.id
+        ) {
+          return {
+            ...item,
+            items: item.items.map((c) =>
+              c.id === id ? { ...c, isFavorite: !c.isFavorite } : c
+            ),
+          };
+        }
+        return item;
+      })
+    );
+  }
+
+  function handleCopyInFolder(text: string, displayName: string) {
+    copyToClipboard(text, displayName);
+  }
+
+  // === RENDER ===
+  if (activeFolder) {
+    return (
+      <FolderBoard
+        folder={activeFolder}
+        onBack={() => setActiveFolderId(null)}
+        onMoveCardOut={handleMoveCardOut}
+        onMoveCardWithin={handleMoveCardWithin}
+        onToggleFavorite={handleToggleFavoriteInFolder}
+        copyToClipboard={handleCopyInFolder}
+      />
+    );
+  }
 
   return (
     <div className="paste-container-wrapper">
@@ -139,8 +237,52 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         />
       )}
 
+      {showFolderModal && (
+        <NameModal
+          isOpen={showFolderModal}
+          onSave={(name) => {
+            if (!name.trim()) return;
+            setBoardItems((prev) => [
+              {
+                id:
+                  typeof crypto !== "undefined" && crypto.randomUUID
+                    ? crypto.randomUUID()
+                    : Date.now().toString(),
+                type: "folder",
+                displayName: name.trim(),
+                items: [],
+              },
+              ...prev,
+            ]);
+            setShowFolderModal(false);
+          }}
+          onClose={() => setShowFolderModal(false)}
+          label="Name your folder"
+        />
+      )}
+
+      <div style={{ margin: "12px 0 6px 0" }}>
+        {folders.length > 0 &&
+          folders.map((folder) => (
+            <FolderComponent
+              key={folder.id}
+              folder={folder}
+              onOpen={(folderId) => setActiveFolderId(folderId)}
+              isActive={false}
+            />
+          ))}
+      </div>
+
       <div className="buttons-container">
         <div className="buttons-row">
+          <button
+            type="button"
+            className="create-folder-btn"
+            style={{ marginRight: 8 }}
+            onClick={() => setShowFolderModal(true)}
+          >
+            + Folder
+          </button>
           <PasteButton onPaste={triggerClipboardPaste} disabled={showModal} />
           <SortButtons
             onSortChange={handleSortChange}
@@ -197,11 +339,26 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
+        {/* Folders as drop targets above cards */}
         <SortableContext
-          items={filteredItems.map((item) => item.id)}
+          items={[
+            ...folders.map((f) => f.id),
+            ...filteredItems.map((item) => item.id),
+          ]}
           strategy={verticalListSortingStrategy}
         >
           <div className="paste-container glassmorphism">
+            {/* Folder drop targets */}
+            {folders.length > 0 &&
+              folders.map((folder) => (
+                <FolderComponent
+                  key={folder.id}
+                  folder={folder}
+                  onOpen={(folderId) => setActiveFolderId(folderId)}
+                  isActive={false}
+                />
+              ))}
+            {/* Cards */}
             {filteredItems.length === 0 ? (
               <div className="empty-state" role="status" aria-live="polite">
                 {searchQuery

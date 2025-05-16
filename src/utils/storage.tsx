@@ -1,62 +1,61 @@
 // src/utils/storage.ts
-import { PastedItem } from "../types/PastedItem";
+import {
+  BoardItem,
+  isCard,
+  isFolder,
+  Folder,
+  PastedItem,
+} from "../types/PastedItem";
 import { LOCAL_STORAGE_KEY } from "../constants/storage";
 
-// Define a loose shape for unknown parsed objects (no any)
-type UnknownPastedItem = {
-  id?: unknown;
-  text?: unknown;
-  displayName?: unknown;
-  timestamp?: unknown;
-  createdAt?: unknown;
-  isFavorite?: unknown;
-};
+// Validate loaded items
+function reviveBoardItem(obj: unknown): BoardItem | null {
+  if (!obj || typeof obj !== "object" || !("type" in obj)) return null;
 
-function isPastedItem(item: unknown): item is PastedItem {
-  if (typeof item !== "object" || item === null) return false;
-  const o = item as UnknownPastedItem;
-  return (
-    typeof o.id === "string" &&
-    typeof o.text === "string" &&
-    typeof o.displayName === "string" &&
-    typeof o.timestamp === "string" &&
-    typeof o.createdAt === "string"
-  );
+  if (isCard(obj)) {
+    const card = obj as PastedItem;
+    return {
+      ...card,
+      isFavorite:
+        typeof card.isFavorite === "boolean" ? card.isFavorite : false,
+    };
+  }
+  if (isFolder(obj)) {
+    const folder = obj as Folder;
+    return {
+      ...folder,
+      items: Array.isArray(folder.items)
+        ? folder.items.map(reviveBoardItem).filter(isCard)
+        : [],
+    };
+  }
+  return null;
 }
 
-export const loadPastes = (): PastedItem[] => {
+export const loadBoardItems = (): BoardItem[] => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (!data) return [];
   try {
     const parsed = JSON.parse(data);
     if (!Array.isArray(parsed)) return [];
     return parsed
-      .map((item) => {
-        if (isPastedItem(item)) {
-          return {
-            ...item,
-            isFavorite:
-              typeof item.isFavorite === "boolean" ? item.isFavorite : false,
-          };
-        }
-        return null;
-      })
-      .filter((item): item is PastedItem => !!item);
+      .map(reviveBoardItem)
+      .filter((item): item is BoardItem => !!item);
   } catch (error) {
-    console.error("❌ Failed to parse stored pastes:", error);
+    console.error("❌ Failed to parse board items:", error);
     return [];
   }
 };
 
-export const savePastes = (pastes: PastedItem[]) => {
+export const saveBoardItems = (items: BoardItem[]) => {
   try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(pastes));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(items));
   } catch (error) {
-    alert("Storage is full or unavailable. Unable to save pastes.");
-    console.error("❌ Failed to save pastes:", error);
+    alert("Storage is full or unavailable. Unable to save board.");
+    console.error("❌ Failed to save board items:", error);
   }
 };
 
-export const clearPastes = () => {
+export const clearBoardItems = () => {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
 };
