@@ -10,6 +10,7 @@ import BoardMain from "./BoardMain";
 import FolderBoard from "./FolderBoard";
 import NameModal from "./NameModal";
 import { generateId } from "../../utils/generateId";
+import { LOCAL_STORAGE_KEY } from "../../constants/storage";
 
 interface ClipboardBoardProps {
   triggerToast: (message: string) => void;
@@ -70,6 +71,17 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
       if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     };
   }, [boardItems]);
+
+  // Cross-tab sync: Listen for board updates in other tabs
+  useEffect(() => {
+    const syncHandler = (e: StorageEvent) => {
+      if (e.key === LOCAL_STORAGE_KEY) {
+        setBoardItems(loadBoardItems());
+      }
+    };
+    window.addEventListener("storage", syncHandler);
+    return () => window.removeEventListener("storage", syncHandler);
+  }, []);
 
   // Active folder
   const activeFolder =

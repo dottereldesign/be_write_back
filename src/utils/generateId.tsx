@@ -6,8 +6,9 @@ export function generateId(): string {
   ) {
     return crypto.randomUUID();
   }
-  // Fallback: longer random string (24 chars)
+  // Fallback: longer random string (24+ chars)
   return (
+    Math.random().toString(36).slice(2, 15) +
     Math.random().toString(36).slice(2, 15) +
     Math.random().toString(36).slice(2, 15)
   );

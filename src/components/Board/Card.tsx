@@ -1,4 +1,5 @@
 // src/components/Board/Card.tsx
+// src/components/Board/Card.tsx
 import { memo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,8 +43,11 @@ const Card = ({
   const [shaking, setShaking] = useState(false);
   const shakeTimeoutRef = useRef<number | null>(null);
 
+  // Validate card data. Log errors and fail fast.
   if (!item || !item.id || !item.text) {
     console.error("❌ Error: Invalid Card data", item);
+    // For production: render a visible card error if you want.
+    // return <div className="error-card">Corrupt card data. Please remove.</div>;
     return null;
   }
 
@@ -68,7 +72,7 @@ const Card = ({
     }
   };
 
-  // Drag handle shake logic (optional)
+  // Drag handle shake effect (optional)
   const startShaking = () => {
     setShaking(true);
     shakeTimeoutRef.current = window.setTimeout(() => setShaking(false), 2000);

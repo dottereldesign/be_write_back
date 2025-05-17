@@ -77,7 +77,7 @@ const BoardMain = ({
     [cards, normalizedQuery, showFavoritesOnly]
   );
 
-  // DnD setup
+  // Drag-n-drop setup
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -100,6 +100,7 @@ const BoardMain = ({
         const cardIdx = prev.findIndex((i) => isCard(i) && i.id === active.id);
         if (cardIdx === -1) return prev;
         const card = prev[cardIdx] as PastedItem;
+        // Remove from main board, add to folder
         const newItems = prev.filter((i) => !(isCard(i) && i.id === active.id));
         return newItems.map((item) =>
           !isCard(item) && item.id === targetFolder.id
@@ -126,10 +127,16 @@ const BoardMain = ({
 
   function handleDragStart(event: DragStartEvent) {
     const id = event.active.id;
-    // Always use cards (not filteredItems, for stability)
+    // Only allow dragging visible cards
     const found = cards.find((item) => item.id === id);
     setActiveDragItem(found || null);
   }
+
+  // Always include folders in the DnD context so they're droppable even when filtering!
+  const contextItems = [
+    ...filteredItems.map((item) => item.id),
+    ...folders.map((folder) => folder.id),
+  ];
 
   return (
     <>
@@ -153,7 +160,7 @@ const BoardMain = ({
           handleClearAll={handleClearAll}
         />
 
-        {/* Drag and drop state message */}
+        {/* Drag-and-drop state message */}
         {!canDragAndDrop && (
           <div
             className="dnd-disabled-msg"
@@ -176,7 +183,7 @@ const BoardMain = ({
 
         {/* Cards */}
         <SortableContext
-          items={filteredItems.map((item) => item.id)}
+          items={contextItems}
           strategy={verticalListSortingStrategy}
         >
           <div className="paste-container glassmorphism">
@@ -212,7 +219,7 @@ const BoardMain = ({
               style={{
                 opacity: 0.5,
                 boxShadow: "0 0 24px 8px #ffe080b0",
-                background: "#f7f2e6",
+                background: "#23262d", // fallback: main card color
                 pointerEvents: "none",
               }}
             />

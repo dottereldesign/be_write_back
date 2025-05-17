@@ -1,5 +1,4 @@
 // src/hooks/useClearPastes.ts
-// src/hooks/useClearPastes.ts
 import { BoardItem } from "../types/PastedItem";
 
 export const useClearPastes = (
