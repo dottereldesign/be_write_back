@@ -25,8 +25,6 @@ const Footer = () => {
           </svg>
         </a>
       </span>
-
-      {/* ☕ Buy Me a Coffee Button */}
       <span className="footer-line">
         <a
           href="https://buymeacoffee.com/dottereldesign"
@@ -36,7 +34,7 @@ const Footer = () => {
           aria-label="Buy me a coffee"
         >
           <img
-            src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+            src="/be_write_back/yellow-button.png"
             alt="Buy Me A Coffee"
             className="coffee-icon"
             width="100"
@@ -44,7 +42,6 @@ const Footer = () => {
           />
         </a>
       </span>
-
       <span className="footer-line">© 2025 Jamie Wilson</span>
     </footer>
   );
