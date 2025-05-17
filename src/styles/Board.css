@@ -134,3 +134,21 @@ main {
     padding: 0.4rem 0.7rem;
   }
 }
+.desktop-folder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+  margin: 0;
+
+  padding-left: 2px;
+}
+.folder-tile.compact {
+  /* see inline style for most, add hover/active if desired */
+  transition: border 0.17s, box-shadow 0.15s, background 0.18s;
+}
+.folder-tile.compact.over {
+  background: #ffeeb0 !important;
+  border: 2px solid #efd670 !important;
+  box-shadow: 0 2px 12px #ffe7a965;
+}

@@ -281,84 +281,6 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         />
       )}
 
-      {/* Folder grid at the very top */}
-      {folders.length > 0 && (
-        <div className="desktop-folder-grid">
-          {folders.map((folder) => (
-            <FolderComponent
-              key={folder.id}
-              folder={folder}
-              onOpen={(folderId) => setActiveFolderId(folderId)}
-              isActive={false}
-              compact
-            />
-          ))}
-        </div>
-      )}
-
-      <div className="buttons-container">
-        <div className="buttons-row">
-          <button
-            type="button"
-            className="create-folder-btn"
-            onClick={() => setShowFolderModal(true)}
-            aria-label="Create a new folder"
-          >
-            <FontAwesomeIcon icon={faPlus} style={{ fontSize: "1em" }} />
-            Create a Folder
-          </button>
-
-          <PasteButton onPaste={triggerClipboardPaste} disabled={showModal} />
-          <SortButtons
-            onSortChange={handleSortChange}
-            sortType={sortType}
-            isAscending={isAscending}
-          />
-          <button
-            className={`favorites-toggle ${showFavoritesOnly ? "active" : ""}`}
-            onClick={() => setShowFavoritesOnly((prev) => !prev)}
-            aria-pressed={showFavoritesOnly}
-            aria-label={
-              showFavoritesOnly
-                ? "Show all pastes, including non-favorites"
-                : "Show only favorites"
-            }
-            title={
-              showFavoritesOnly
-                ? "Show all pastes, including non-favorites"
-                : "Show only starred favorites"
-            }
-            type="button"
-          >
-            {showFavoritesOnly ? "Show All" : "Show ⭐ Favorites"}
-          </button>
-          <ClearButton onClear={handleClearAll} />
-        </div>
-        <div className="search-row">
-          <SearchBar onSearch={setSearchQuery} />
-        </div>
-      </div>
-
-      {!canDragAndDrop && (
-        <div
-          className="dnd-disabled-msg"
-          style={{
-            margin: "0.5em 0",
-            color: "#EBCB8B",
-            fontSize: "0.96em",
-            fontWeight: "bold",
-            textAlign: "center",
-            background: "#2D2D2D",
-            padding: "0.5em 1em",
-            borderRadius: "6px",
-          }}
-          aria-live="polite"
-        >
-          Drag-and-drop rearrange is <b>only</b> available in{" "}
-          <u>Custom Order</u> mode (no filters/search/favorites).
-        </div>
-      )}
-
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -366,11 +288,88 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         onDragStart={handleDragStart}
         onDragCancel={() => setActiveDragItem(null)}
       >
+        {/* Folder grid at the very top */}
+        {folders.length > 0 && (
+          <div className="desktop-folder-grid">
+            {folders.map((folder) => (
+              <FolderComponent
+                key={folder.id}
+                folder={folder}
+                onOpen={(folderId) => setActiveFolderId(folderId)}
+                isActive={false}
+                compact
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="buttons-container">
+          <div className="buttons-row">
+            <button
+              type="button"
+              className="create-folder-btn"
+              onClick={() => setShowFolderModal(true)}
+              aria-label="Create a new folder"
+            >
+              <FontAwesomeIcon icon={faPlus} style={{ fontSize: "1em" }} />
+              Create a Folder
+            </button>
+
+            <PasteButton onPaste={triggerClipboardPaste} disabled={showModal} />
+            <SortButtons
+              onSortChange={handleSortChange}
+              sortType={sortType}
+              isAscending={isAscending}
+            />
+            <button
+              className={`favorites-toggle ${
+                showFavoritesOnly ? "active" : ""
+              }`}
+              onClick={() => setShowFavoritesOnly((prev) => !prev)}
+              aria-pressed={showFavoritesOnly}
+              aria-label={
+                showFavoritesOnly
+                  ? "Show all pastes, including non-favorites"
+                  : "Show only favorites"
+              }
+              title={
+                showFavoritesOnly
+                  ? "Show all pastes, including non-favorites"
+                  : "Show only starred favorites"
+              }
+              type="button"
+            >
+              {showFavoritesOnly ? "Show All" : "Show ⭐ Favorites"}
+            </button>
+            <ClearButton onClear={handleClearAll} />
+          </div>
+          <div className="search-row">
+            <SearchBar onSearch={setSearchQuery} />
+          </div>
+        </div>
+
+        {!canDragAndDrop && (
+          <div
+            className="dnd-disabled-msg"
+            style={{
+              margin: "0.5em 0",
+              color: "#EBCB8B",
+              fontSize: "0.96em",
+              fontWeight: "bold",
+              textAlign: "center",
+              background: "#2D2D2D",
+              padding: "0.5em 1em",
+              borderRadius: "6px",
+            }}
+            aria-live="polite"
+          >
+            Drag-and-drop rearrange is <b>only</b> available in{" "}
+            <u>Custom Order</u> mode (no filters/search/favorites).
+          </div>
+        )}
+
         <SortableContext
-          items={[
-            ...folders.map((f) => f.id), // still needed for DnD drop targets
-            ...filteredItems.map((item) => item.id),
-          ]}
+          items={filteredItems.map((item) => item.id)}
           strategy={verticalListSortingStrategy}
         >
           <div className="paste-container glassmorphism">
