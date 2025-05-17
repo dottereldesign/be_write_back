@@ -8,7 +8,7 @@ import {
 } from "../types/PastedItem";
 import { LOCAL_STORAGE_KEY } from "../constants/storage";
 
-// Validate loaded items
+/** Accept a triggerToast for user feedback. */
 function reviveBoardItem(obj: unknown): BoardItem | null {
   if (!obj || typeof obj !== "object" || !("type" in obj)) return null;
 
@@ -47,11 +47,15 @@ export const loadBoardItems = (): BoardItem[] => {
   }
 };
 
-export const saveBoardItems = (items: BoardItem[]) => {
+export const saveBoardItems = (
+  items: BoardItem[],
+  triggerToast?: (msg: string) => void
+) => {
   try {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(items));
   } catch (error) {
-    alert("Storage is full or unavailable. Unable to save board.");
+    if (triggerToast)
+      triggerToast("Storage is full or unavailable. Unable to save board.");
     console.error("❌ Failed to save board items:", error);
   }
 };

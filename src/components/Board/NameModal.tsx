@@ -1,5 +1,4 @@
 // src/components/Board/NameModal.tsx
-// src/components/Board/NameModal.tsx
 import { useState, useEffect, useRef, memo } from "react";
 import "../../styles/NameModal.css";
 import { useModalKeyboardShortcuts } from "../../hooks/useModalKeyboardShortcuts";
@@ -9,7 +8,7 @@ interface NameModalProps {
   onClose: () => void;
   isOpen: boolean;
   pastedText?: string | null;
-  label?: string; // New: allows reuse for folders
+  label?: string; // For folders, etc.
 }
 
 const NameModal = ({
@@ -22,6 +21,7 @@ const NameModal = ({
   const [name, setName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElement = useRef<HTMLElement | null>(null);
 
   useModalKeyboardShortcuts({
     isOpen,
@@ -29,15 +29,23 @@ const NameModal = ({
     onConfirm: handleSave,
   });
 
+  // Focus trap and restore
   useEffect(() => {
     if (isOpen) {
+      lastFocusedElement.current = document.activeElement as HTMLElement;
       setName("");
       requestAnimationFrame(() => {
         inputRef.current?.focus();
       });
     }
+    return () => {
+      if (!isOpen && lastFocusedElement.current) {
+        lastFocusedElement.current.focus();
+      }
+    };
   }, [isOpen, pastedText]);
 
+  // Click outside to close
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideClick = (event: MouseEvent) => {
@@ -51,6 +59,35 @@ const NameModal = ({
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen, onClose]);
+
+  // Trap focus inside modal (very basic version)
+  useEffect(() => {
+    if (!isOpen) return;
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const node = modalRef.current;
+      if (!node) return;
+      const focusableEls = node.querySelectorAll<HTMLElement>(
+        'input,button,[tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableEls.length === 0) return;
+      const first = focusableEls[0],
+        last = focusableEls[focusableEls.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    };
+    document.addEventListener("keydown", trap);
+    return () => document.removeEventListener("keydown", trap);
+  }, [isOpen]);
 
   function handleSave() {
     if (name.trim()) {

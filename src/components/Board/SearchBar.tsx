@@ -1,7 +1,7 @@
 // src/components/Board/SearchBar.tsx
 import { useState, useEffect } from "react";
 import "../../styles/SearchBar.css";
-import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import { useDebounce } from "../../hooks/useDebounce"; // <-- correct
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -9,7 +9,7 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [inputValue, setInputValue] = useState("");
-  const debouncedValue = useDebouncedValue(inputValue, 300);
+  const debouncedValue = useDebounce(inputValue, 300); // <-- correct
 
   useEffect(() => {
     onSearch(debouncedValue.trim());

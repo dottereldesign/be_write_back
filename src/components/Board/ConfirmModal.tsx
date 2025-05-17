@@ -11,9 +11,23 @@ interface ConfirmModalProps {
 
 const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElement = useRef<HTMLElement | null>(null);
 
   useModalKeyboardShortcuts({ isOpen, onConfirm, onCancel });
 
+  // Restore focus after close
+  useEffect(() => {
+    if (isOpen) {
+      lastFocusedElement.current = document.activeElement as HTMLElement;
+    }
+    return () => {
+      if (!isOpen && lastFocusedElement.current) {
+        lastFocusedElement.current.focus();
+      }
+    };
+  }, [isOpen]);
+
+  // Click outside to close
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideClick = (event: MouseEvent) => {
@@ -27,6 +41,35 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel }: ConfirmModalProps) => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen, onCancel]);
+
+  // Trap focus
+  useEffect(() => {
+    if (!isOpen) return;
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const node = modalRef.current;
+      if (!node) return;
+      const focusableEls = node.querySelectorAll<HTMLElement>(
+        'input,button,[tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableEls.length === 0) return;
+      const first = focusableEls[0],
+        last = focusableEls[focusableEls.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    };
+    document.addEventListener("keydown", trap);
+    return () => document.removeEventListener("keydown", trap);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
