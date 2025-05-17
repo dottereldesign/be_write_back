@@ -1,11 +1,8 @@
 /* --- Card vertical layout --- */
 
 .paste-card-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6em;
   background: #151b23;
-  color: #111;
+  color: #fff; /* Changed from #111 to #fff for better contrast */
   border-radius: 16px;
   padding: 1em;
   margin: 1.2em 0;
@@ -96,8 +93,8 @@
 .timestamp {
   grid-row: 2;
   grid-column: 2;
-  font-size: 0.71em;
-  color: #6c7381;
+  font-size: 0.8em;
+  color: #ced6e0; /* Changed from #6c7381 to #ced6e0 for better contrast */
   letter-spacing: 0.02em;
   font-weight: 500;
   margin: 0 0 0.1em 0;
@@ -250,4 +247,22 @@
   color: white !important;
   width: min(100%, 150px) !important;
   border: 0 !important;
+}
+/* Add focus ring for keyboard navigation */
+.star-icon:focus,
+.big-copy-button:focus,
+.clear-button:focus {
+  outline: 2px solid #42ccff;
+  outline-offset: 2px;
+}
+
+/* Touch target size for star */
+.star-icon {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px !important;
+  margin: -10px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

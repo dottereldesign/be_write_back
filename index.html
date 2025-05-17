@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="icon" href="/be_write_back/brb.png" type="image/png" />
-
     <link rel="apple-touch-icon" href="/be_write_back/brb.png" />
 
     <title>bewriteback</title>
@@ -30,9 +29,30 @@
       content="https://dottereldesign.github.io/be_write_back/brb.png"
     />
 
+    <!-- Security and performance headers (limited on static hosts) -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: https://dottereldesign.github.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self';"
+    />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="no-referrer-when-downgrade" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta
+      http-equiv="Strict-Transport-Security"
+      content="max-age=31536000; includeSubDomains; preload"
+    />
+
+    <!-- Preload LCP image (example) -->
+    <link
+      rel="preload"
+      as="image"
+      href="/be_write_back/brb.png"
+      type="image/png"
+    />
+
     <!-- PROD build: Vite will inject script automatically -->
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

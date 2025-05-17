@@ -1,5 +1,4 @@
 // src/components/Board/Card.tsx
-// src/components/Board/Card.tsx
 import { memo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -43,11 +42,8 @@ const Card = ({
   const [shaking, setShaking] = useState(false);
   const shakeTimeoutRef = useRef<number | null>(null);
 
-  // Validate card data. Log errors and fail fast.
   if (!item || !item.id || !item.text) {
     console.error("❌ Error: Invalid Card data", item);
-    // For production: render a visible card error if you want.
-    // return <div className="error-card">Corrupt card data. Please remove.</div>;
     return null;
   }
 
@@ -72,7 +68,6 @@ const Card = ({
     }
   };
 
-  // Drag handle shake effect (optional)
   const startShaking = () => {
     setShaking(true);
     shakeTimeoutRef.current = window.setTimeout(() => setShaking(false), 2000);
@@ -108,7 +103,6 @@ const Card = ({
       onKeyDown={handleKeyDown}
       data-testid="card"
     >
-      {/* Header as a grid: drag | title/timestamp | star */}
       <div className="card-header-grid">
         {/* Drag handle, spans 2 rows */}
         <div
@@ -150,8 +144,24 @@ const Card = ({
           }
           title={item.isFavorite ? "Remove from favorites" : "Add to favorites"}
           type="button"
+          tabIndex={0}
+          style={{
+            minWidth: 44,
+            minHeight: 44,
+            // Give extra hit area for touch!
+            padding: "10px",
+            margin: "-10px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           <FontAwesomeIcon icon={item.isFavorite ? filledStar : emptyStar} />
+          <span className="sr-only">
+            {item.isFavorite
+              ? `Remove ${item.displayName} from favorites`
+              : `Add ${item.displayName} to favorites`}
+          </span>
         </button>
         {/* Timestamp */}
         <div className="timestamp">{item.timestamp}</div>

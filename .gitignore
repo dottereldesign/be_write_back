@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Prevent stray JS/JSX in source
+src/**/*.js
+src/**/*.jsx
