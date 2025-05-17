@@ -1,16 +1,13 @@
 // src/components/Board/Card.tsx
-import { memo } from "react";
+import { memo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCopy,
-  faGripLines,
   faStar as filledStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import "../../styles/Card.css";
 import { PastedItem } from "../../types/PastedItem";
-
-// DnD-kit
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -20,6 +17,8 @@ interface CardProps {
   onToggleFavorite: (id: string) => void;
   id: string;
   isDraggable?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 const Card = ({
@@ -28,6 +27,8 @@ const Card = ({
   onToggleFavorite,
   id,
   isDraggable = false,
+  className = "",
+  style = {},
 }: CardProps) => {
   const {
     attributes,
@@ -37,6 +38,9 @@ const Card = ({
     transition,
     isDragging,
   } = useSortable({ id, disabled: !isDraggable });
+
+  const [shaking, setShaking] = useState(false);
+  const shakeTimeoutRef = useRef<number | null>(null);
 
   if (!item || !item.id || !item.text) {
     console.error("❌ Error: Invalid Card data", item);
@@ -49,13 +53,11 @@ const Card = ({
       | React.KeyboardEvent<HTMLDivElement>
   ) => {
     if (event) event.stopPropagation();
-    console.log("[Card] Copy", item.displayName, item.text);
     copyToClipboard(item.text, item.displayName);
   };
 
   const handleFavoriteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    console.log("[Card] Toggle favorite", item.displayName, item.id);
     onToggleFavorite(item.id);
   };
 
@@ -66,57 +68,76 @@ const Card = ({
     }
   };
 
-  console.log("[Card] Render", item.displayName, id);
+  // Drag handle shake logic (optional)
+  const startShaking = () => {
+    setShaking(true);
+    shakeTimeoutRef.current = window.setTimeout(() => setShaking(false), 2000);
+  };
+  const stopShaking = () => {
+    setShaking(false);
+    if (shakeTimeoutRef.current !== null) {
+      window.clearTimeout(shakeTimeoutRef.current);
+      shakeTimeoutRef.current = null;
+    }
+  };
+
+  const shouldShake = isDragging || shaking;
 
   return (
     <div
-      className={`paste-card${isDragging ? " dragging" : ""}`}
+      className={`paste-card-vertical${isDragging ? " dragging" : ""}${
+        shouldShake ? " shake" : ""
+      } ${className}`}
       ref={setNodeRef}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.7 : 1,
         zIndex: isDragging ? 10 : "auto",
-        background: isDragging ? "#f8fafd" : undefined,
+        background: isDragging ? "#23262d" : undefined,
         boxShadow: isDragging ? "0 4px 16px 0 rgba(30,50,110,0.12)" : undefined,
+        ...style,
       }}
-      onClick={handleCopy}
       tabIndex={0}
       aria-label={`Copy '${item.displayName}' to clipboard`}
       role="button"
       onKeyDown={handleKeyDown}
+      data-testid="card"
     >
-      <div
-        className={`card-drag-handle${!isDraggable ? " disabled" : ""}`}
-        {...(isDraggable ? attributes : {})}
-        {...(isDraggable ? listeners : {})}
-        tabIndex={-1}
-        aria-label={
-          isDraggable ? "Drag to reorder" : "Reordering disabled in this view"
-        }
-        title={isDraggable ? "Drag to reorder" : "Custom order disabled"}
-        style={{
-          opacity: isDraggable ? 1 : 0.4,
-          cursor: isDraggable ? "grab" : "not-allowed",
-        }}
-      >
-        <FontAwesomeIcon icon={faGripLines} />
-      </div>
-      <div className="timestamp" aria-label={`Pasted at ${item.timestamp}`}>
-        {item.timestamp}
-      </div>
-      <div className="card-top-icons">
-        <button
-          className="copy-icon"
-          onClick={handleCopy}
-          aria-label={`Copy '${item.displayName}'`}
-          title="Copy to clipboard"
-          type="button"
+      {/* Header as a grid: drag | title/timestamp | star */}
+      <div className="card-header-grid">
+        {/* Drag handle, spans 2 rows */}
+        <div
+          className={`braille-drag-handle${!isDraggable ? " disabled" : ""}`}
+          {...(isDraggable ? attributes : {})}
+          {...(isDraggable ? listeners : {})}
+          tabIndex={-1}
+          aria-label={
+            isDraggable ? "Drag to reorder" : "Reordering disabled in this view"
+          }
+          title={isDraggable ? "Drag to reorder" : "Custom order disabled"}
+          onMouseDown={startShaking}
+          onTouchStart={startShaking}
+          onMouseUp={stopShaking}
+          onMouseLeave={stopShaking}
+          onTouchEnd={stopShaking}
+          onTouchCancel={stopShaking}
         >
-          <FontAwesomeIcon icon={faCopy} />
-        </button>
+          <span className="braille-dots">
+            {[0, 1, 2].map((row) => (
+              <span key={row} className="braille-row">
+                {[0, 1].map((col) => (
+                  <span key={col} className="dot"></span>
+                ))}
+              </span>
+            ))}
+          </span>
+        </div>
+        {/* Title */}
+        <span className="card-title">{item.displayName}</span>
+        {/* Star, spans 2 rows */}
         <button
-          className="star-icon"
+          className={`star-icon${item.isFavorite ? " mario-star active" : ""}`}
           onClick={handleFavoriteClick}
           aria-label={
             item.isFavorite
@@ -128,13 +149,20 @@ const Card = ({
         >
           <FontAwesomeIcon icon={item.isFavorite ? filledStar : emptyStar} />
         </button>
+        {/* Timestamp */}
+        <div className="timestamp">{item.timestamp}</div>
       </div>
-      <div
-        className="pasted-text"
-        aria-label={`Saved text: ${item.displayName}`}
+      {/* Copy button */}
+      <button
+        className="big-copy-button"
+        onClick={handleCopy}
+        aria-label={`Copy '${item.displayName}'`}
+        title="Copy to clipboard"
+        type="button"
       >
-        {item.displayName}
-      </div>
+        <FontAwesomeIcon icon={faCopy} className="copy-icon" />
+        <span>Copy</span>
+      </button>
     </div>
   );
 };

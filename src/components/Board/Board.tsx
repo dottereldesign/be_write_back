@@ -1,5 +1,4 @@
 // src/components/Board/Board.tsx
-// src/components/Board/Board.tsx
 import { useEffect, useState, useCallback } from "react";
 import NameModal from "./NameModal";
 import SortButtons from "./SortButtons";
@@ -28,7 +27,9 @@ import {
   useSensor,
   useSensors,
   KeyboardSensor,
+  DragOverlay,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -53,6 +54,9 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState<boolean>(false);
   const [showFolderModal, setShowFolderModal] = useState(false);
   const [activeFolderId, setActiveFolderId] = useState<string | null>(null);
+
+  // For DragOverlay ghost
+  const [activeDragItem, setActiveDragItem] = useState<PastedItem | null>(null);
 
   const cards = boardItems.filter(isCard) as PastedItem[];
   const folders = boardItems.filter((item): item is Folder => !isCard(item));
@@ -110,8 +114,13 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
     normalizedQuery === "" && !showFavoritesOnly && sortType === "custom";
 
   function handleDragEnd(event: DragEndEvent) {
-    if (!canDragAndDrop) return;
+    if (!canDragAndDrop) {
+      setActiveDragItem(null);
+      return;
+    }
     const { active, over } = event;
+    setActiveDragItem(null);
+
     if (!over || active.id === over.id) return;
 
     // Is it a folder drop?
@@ -149,6 +158,15 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
       else next.push(item);
     }
     setBoardItems(next);
+  }
+
+  function handleDragStart(event: DragStartEvent) {
+    const id = event.active.id;
+    // Try both: filteredItems (for current view) or cards (all)
+    const found =
+      filteredItems.find((item) => item.id === id) ||
+      cards.find((item) => item.id === id);
+    setActiveDragItem(found || null);
   }
 
   // Helper: Get the active folder object (if one is open)
@@ -342,6 +360,8 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        onDragCancel={() => setActiveDragItem(null)}
       >
         {/* Folders as drop targets above cards */}
         <SortableContext
@@ -383,6 +403,25 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
             )}
           </div>
         </SortableContext>
+        {/* DRAG GHOST OVERLAY */}
+        <DragOverlay dropAnimation={null}>
+          {activeDragItem ? (
+            <Card
+              item={activeDragItem}
+              copyToClipboard={() => {}}
+              onToggleFavorite={() => {}}
+              id={activeDragItem.id}
+              isDraggable={false}
+              className="ghost"
+              style={{
+                opacity: 0.5,
+                boxShadow: "0 0 24px 8px #ffe080b0",
+                background: "#f7f2e6",
+                pointerEvents: "none",
+              }}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );
