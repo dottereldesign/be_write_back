@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import clipboardImg from "../assets/clipboard-img.webp";
@@ -19,27 +19,27 @@ const Header = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(isOpen));
   }, [isOpen]);
 
-  // ✅ Step visibility state
+  // Simpler: state-only step fade-in
   const [stepVisible, setStepVisible] = useState([false, false, false]);
-  const stepVisibleRef = useRef(stepVisible); // Use a ref to track state without triggering re-renders
 
   useEffect(() => {
+    let timeouts: number[] = [];
     if (isOpen) {
-      stepVisibleRef.current.forEach((_, index) => {
+      setStepVisible([false, false, false]);
+      timeouts = [0, 1, 2].map((index) =>
         setTimeout(() => {
           setStepVisible((prev) => {
             const updated = [...prev];
             updated[index] = true;
-            stepVisibleRef.current = updated; // Update ref value
             return updated;
           });
-        }, index * 400);
-      });
+        }, index * 400)
+      );
     } else {
       setStepVisible([false, false, false]);
-      stepVisibleRef.current = [false, false, false]; // Reset ref when closed
     }
-  }, [isOpen]); // ✅ No more missing dependency errors
+    return () => timeouts.forEach(clearTimeout);
+  }, [isOpen]);
 
   return (
     <header className="app-header">
@@ -76,20 +76,16 @@ const Header = () => {
             <span className="step-number">Step 1</span>
             <p>Paste text using ctrl+v (or cmd+v on Mac).</p>
           </div>
-
           <div className={`step-container ${stepVisible[1] ? "fade-in" : ""}`}>
             <span className="step-number">Step 2</span>
             <p>Name your saved text in the pop-up, it will be stored below.</p>
           </div>
-
           <div className={`step-container ${stepVisible[2] ? "fade-in" : ""}`}>
             <span className="step-number">Step 3</span>
             <p>Copy it again by clicking anywhere on the card.</p>
           </div>
-
           <div className="glow-sphere sphere-1"></div>
           <div className="glow-sphere sphere-2"></div>
-
           <div className="clipboard-container">
             <img
               src={clipboardImg}
@@ -98,7 +94,6 @@ const Header = () => {
             />
             <Stars />
           </div>
-
           <div className="glow-sphere sphere-3"></div>
           <div className="glow-sphere sphere-4"></div>
         </div>
