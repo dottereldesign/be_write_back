@@ -1,21 +1,28 @@
 /* --- Card vertical layout --- */
 
 .paste-card-vertical {
-  background: #151b23;
-  color: #fff; /* Changed from #111 to #fff for better contrast */
+  background: transparent;
+  color: #fff;
   border-radius: 16px;
   padding: 1em;
   margin: 1.2em 0;
   width: 100%;
   box-sizing: border-box;
-  border: 2px solid #ededed;
+
   position: relative;
-  box-shadow: 0 2px 10px 0 #1a1a1a0a;
+  /* REPLACE this: box-shadow: 0 2px 10px 0 #1a1a1a0a; */
+  box-shadow: 0 0 0 1px color-mix(in oklab, #d6ebfd30, #363a3f 25%),
+    0 8px 40px #00000026, 0 12px 32px -16px #0000004d;
   transition: box-shadow 0.22s, border-color 0.14s, background 0.18s;
 }
+
 .paste-card-vertical:hover {
-  box-shadow: 0 8px 28px 0 #d1d1d120;
+  /* REPLACE this: box-shadow: 0 2px 10px 0 #1a1a1a0a; */
+  box-shadow: 0 0 0 1px color-mix(in oklab, #d6ebfd30, #363a3f 25%),
+    0 8px 40px #00000026, 0 12px 32px -16px #0000004d;
+  transition: box-shadow 0.22s, border-color 0.14s, background 0.18s;
   border-color: #d5d5d5;
+  cursor: pointer;
 }
 .paste-card-vertical.dragging {
   background: #fffbe9;
@@ -106,7 +113,7 @@
   filter: drop-shadow(0 0 3px #f9e800cc) drop-shadow(0 0 7px #fff700bb)
     drop-shadow(0 0 15px #f9e80099) drop-shadow(0 1.5px 0 #ffe876);
   color: #ffe800 !important;
-  background: none;
+
   border-radius: 50%;
   transition: transform 0.11s, filter 0.15s;
   /* Make it bigger, like Mario powerup! */
@@ -249,12 +256,6 @@
   border: 0 !important;
 }
 /* Add focus ring for keyboard navigation */
-.star-icon:focus,
-.big-copy-button:focus,
-.clear-button:focus {
-  outline: 2px solid #42ccff;
-  outline-offset: 2px;
-}
 
 /* Touch target size for star */
 .star-icon {
@@ -265,4 +266,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  background: none !important;
+  border: none;
 }
