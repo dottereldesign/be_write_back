@@ -281,17 +281,20 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         />
       )}
 
-      <div style={{ margin: "12px 0 6px 0" }}>
-        {folders.length > 0 &&
-          folders.map((folder) => (
+      {/* Folder grid at the very top */}
+      {folders.length > 0 && (
+        <div className="desktop-folder-grid">
+          {folders.map((folder) => (
             <FolderComponent
               key={folder.id}
               folder={folder}
               onOpen={(folderId) => setActiveFolderId(folderId)}
               isActive={false}
+              compact
             />
           ))}
-      </div>
+        </div>
+      )}
 
       <div className="buttons-container">
         <div className="buttons-row">
@@ -363,26 +366,15 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
         onDragStart={handleDragStart}
         onDragCancel={() => setActiveDragItem(null)}
       >
-        {/* Folders as drop targets above cards */}
         <SortableContext
           items={[
-            ...folders.map((f) => f.id),
+            ...folders.map((f) => f.id), // still needed for DnD drop targets
             ...filteredItems.map((item) => item.id),
           ]}
           strategy={verticalListSortingStrategy}
         >
           <div className="paste-container glassmorphism">
-            {/* Folder drop targets */}
-            {folders.length > 0 &&
-              folders.map((folder) => (
-                <FolderComponent
-                  key={folder.id}
-                  folder={folder}
-                  onOpen={(folderId) => setActiveFolderId(folderId)}
-                  isActive={false}
-                />
-              ))}
-            {/* Cards */}
+            {/* No folder tiles here! Only cards */}
             {filteredItems.length === 0 ? (
               <div className="empty-state" role="status" aria-live="polite">
                 {searchQuery

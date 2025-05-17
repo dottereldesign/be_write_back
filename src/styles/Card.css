@@ -235,3 +235,19 @@
 [aria-roledescription="drag-preview"] {
   pointer-events: none !important;
 }
+
+.desktop-folder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 14px 0 10px 0;
+  padding: 2px 2px 6px 2px;
+  min-height: 90px;
+  align-items: flex-start;
+}
+.folder-tile.compact {
+  background-color: #16182a !important;
+  color: white !important;
+  width: min(100%, 150px) !important;
+  border: 0 !important;
+}
