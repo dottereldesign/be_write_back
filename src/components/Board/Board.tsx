@@ -17,6 +17,8 @@ import { useClipboardPaste } from "../../hooks/useClipboardPaste";
 import { loadBoardItems, saveBoardItems } from "../../utils/storage";
 import { BoardItem, PastedItem, Folder, isCard } from "../../types/PastedItem";
 import "../../styles/Board.css";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // DnD-kit
 import {
@@ -278,11 +280,13 @@ const ClipboardBoard = ({ triggerToast }: ClipboardBoardProps) => {
           <button
             type="button"
             className="create-folder-btn"
-            style={{ marginRight: 8 }}
             onClick={() => setShowFolderModal(true)}
+            aria-label="Create a new folder"
           >
-            + Folder
+            <FontAwesomeIcon icon={faPlus} style={{ fontSize: "1em" }} />
+            Create a Folder
           </button>
+
           <PasteButton onPaste={triggerClipboardPaste} disabled={showModal} />
           <SortButtons
             onSortChange={handleSortChange}
