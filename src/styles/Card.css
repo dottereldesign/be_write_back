@@ -1,7 +1,7 @@
 /* --- Card vertical layout --- */
 
 .paste-card-vertical {
-  background: transparent;
+  background: #18191b;
   color: #fff;
   border-radius: 16px;
   padding: 1em;
@@ -250,9 +250,11 @@
   align-items: flex-start;
 }
 .folder-tile.compact {
-  background-color: #16182a !important;
+  background-color: #18191b !important;
+  box-shadow: 0 0 0 1px color-mix(in oklab, #d6ebfd30, #363a3f 25%),
+    0 8px 40px #00000026, 0 12px 32px -16px #0000004d;
+  transition: box-shadow 0.22s, border-color 0.14s, background 0.18s;
   color: white !important;
-  width: min(100%, 150px) !important;
   border: 0 !important;
 }
 /* Add focus ring for keyboard navigation */
